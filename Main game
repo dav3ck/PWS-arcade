@@ -1,0 +1,38 @@
+#libraries management
+import pygame
+pygame.init()
+
+#predetermined variables
+black = (0, 0, 0)
+white = (255, 255, 255)
+green = (0, 255, 0)
+red = (255, 0, 0)
+blue = (0,0,255)
+
+sc_w = 1000 #screen width
+sc_h = 800 #screen hight
+
+#setsup window
+screen = pygame.display.set_mode((sc_w,sc_h))
+pygame.display.set_caption('very early pre-alfa')
+clock = pygame.time.Clock()
+
+#main game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        elif event.type == pygame.KEYDOWN:
+          
+        elif event.type == pygame.KEYUP:
+
+    #Game logica
+    
+    
+    #Screen management
+    screen.fill(black)
+    
+    
+    
+    #sets maximum framerate
+    clock.tick(60)   
