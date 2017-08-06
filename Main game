@@ -1,6 +1,7 @@
 #libraries management
 import pygame
 pygame.init()
+import classes
 
 #predetermined variables
 black = (0, 0, 0)
@@ -12,6 +13,8 @@ blue = (0,0,255)
 sc_w = 1000 #screen width
 sc_h = 800 #screen hight
 
+
+
 #setsup window
 screen = pygame.display.set_mode((sc_w,sc_h))
 pygame.display.set_caption('very early pre-alfa')
@@ -22,17 +25,18 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-        elif event.type == pygame.KEYDOWN:
-          
-        elif event.type == pygame.KEYUP:
+        #elif event.type == pygame.KEYDOWN:
+        #elif event.type == pygame.KEYUP:
+            
 
     #Game logica
     
-    
     #Screen management
     screen.fill(black)
+
+    pygame.draw.rect(screen, green, [sc_w/2-25,sc_h-50,50,50] , 2)
+
+    pygame.display.flip()
     
-    
-    
-    #sets maximum framerate
-    clock.tick(60)   
+    #sets max fps
+    clock.tick(60)
