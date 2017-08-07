@@ -52,7 +52,7 @@ while True:
         ball.xspeed *= -1
     
     #Screen management
-    #screen.fill(black)
+    screen.fill(black)
 
     pygame.draw.rect(screen, green, [sc_w/2-25+player.xcord,sc_h-50+player.ycord,50,50] , 2)
     pygame.draw.circle(screen, red, [ball.xcord, int(ball.ycord)], ball.dia, 5)
