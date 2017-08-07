@@ -1,12 +1,12 @@
 #general moving class
 class moving_object():
     def __init__(self):
-        self.hspeed = 10 #horizontal speed
-        self.vspeed = 10 #vertical speed
+        self.xspeed = 0 #horizontal speed
+        self.yspeed = 0 #vertical speed
         self.xcord = 0 #x coördinate
         self.ycord = 0 #y coördinate
 
-    def left(self):
+    '''def left(self):
         self.xcord -= self.hspeed
 
     def right(self):
@@ -16,5 +16,14 @@ class moving_object():
         self.ycord -= self.vspeed
 
     def down(self):
-        self.ycord == self.vspeed
+        self.ycord == self.vspeed'''
     
+#ball variable
+class ball():
+    def __init__(self, dia):
+        self.xcord = 100 #x coord
+        self.ycord = 70 #y coord
+        self.xspeed = 3 #horizontal speed
+        self.yspeed = 0 #vertical speed
+        self.weight = 0.1 #size of the parabole bigger number smaller parabole
+        self.dia = dia
