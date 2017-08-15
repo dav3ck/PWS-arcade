@@ -8,16 +8,22 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 blue = (0,0,255)
+
 withd = 1000 #Brete van scherm
 height = 800 #Hoogte van scherm
+
+pygame.font.init()
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
 Score = 0
+timer = 0
 
 editor = False
 xlines = 50
 ylines = 50
 
 screen = pygame.display.set_mode((1000,800)) #setsup window
-pygame.display.set_caption('very early pre-alfa')
+pygame.display.set_caption('early pre-alfa')
 clock = pygame.time.Clock()
 
 player = Player() #creates the player
@@ -44,14 +50,12 @@ while True:
                 player.xspeed = 0
             
     #Score tekst
-
-    pygame.font.init()
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)
     textsurface = myfont.render('Score: ' + str(Score), False, white)
 
     #Game logica
-
     everything.update()
+
+    timer += 1
 
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
@@ -72,6 +76,10 @@ while True:
                 ball = Ball(5,ball.xcord,ball.ycord)
             else:
                 Score += 1
+
+    if (Score > 3 and len(balls) < 2) or timer > 1800: #auto spawns balls
+        ball = Ball(1,500,70)
+        timer = 0
 
     #Screen management
     screen.fill(black)
