@@ -10,7 +10,9 @@ blue = (0,0,255)
 #lists
 bullets = pygame.sprite.Group() #list that will hold all the bullets
 balls = pygame.sprite.Group() #list that will hold all ze balls
+lines = pygame.sprite.Group()
 everything = pygame.sprite.Group() #list that will hold everything
+
 
 #class defenitions
 class parent(pygame.sprite.Sprite):
@@ -50,10 +52,12 @@ class Ball(parent):
             self.xspeed = -7
             self. dia = 25
             self.weight = 0.3
-        self.image = pygame.Surface([self.dia,self.dia])
-        self.image.fill(red)
+        #self.image = pygame.Surface([self.dia,self.dia])
+        #self.image.fill(red)
+        self.image = pygame.image.load("Sprites/BIG1.png")
         self.rect = self.image.get_rect()
         balls.add(self)
+        
 
     def update(self):
         self.yspeed -= self.weight #handles ball bouncing
@@ -101,6 +105,9 @@ class Bullet(parent):
         self.rect.x = self.xcord
         if self.ycord < -10:
             pygame.sprite.Sprite.kill(self)
+
+
+        
 
 
 
