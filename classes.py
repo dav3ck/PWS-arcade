@@ -88,7 +88,7 @@ class Ball(parent):
             self.sizenum = 2
             self.image = pygame.image.load("Sprites/size2/type0/variation0/itteration0.png")
             
-        #self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect()
         balls.add(self)
         
 
