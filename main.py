@@ -60,13 +60,13 @@ while True:
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
         for ball in hits:
-            ball.yspeed = 9.5
+            if ball.typenum == 0:
+                ball.yspeed = 9.5
             player.image.fill(white)
-
+                
     for bullet in bullets:
         hits = pygame.sprite.spritecollide(bullet, balls, True) #bullet on ball collisions
         for ball in hits:
-            print("hit")
             pygame.sprite.Sprite.kill(bullet)
             if ball.check == 1:
                 ball = Ball(2,ball.xcord,ball.ycord)

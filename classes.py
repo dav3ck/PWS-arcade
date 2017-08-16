@@ -110,10 +110,9 @@ class Ball(parent):
             self.timer = 0
             if self.ittnum > 4: #CHANGE THIS TO MATCH AMMOUNT OF FRAMES PER CYCLE -1
                 self.ittnum = -1
-        if self.timer > 5 and self.typenum == 1:
+        if self.timer > 3 and self.typenum == 1:
             self.ittnum += 1
             self.timer = 0
-            print (self.ittnum)
             if self.ittnum == 4:
                 self.yspeed = 10
                 self.xspeed = self.xspeed * 10000
@@ -129,7 +128,6 @@ class Ball(parent):
         self.rect.x = self.xcord
         self.rect.y = self.ycord
 
-        #self.rect.topleft = self.xcord, self.ycord #Zorgt voor betere collision.. I think
         
 
 class Player(parent):
@@ -146,7 +144,6 @@ class Player(parent):
         self.ycord += self.yspeed
         self.rect.x = self.xcord
         self.rect.y = self.ycord
-        #self.rect.topleft = self.xcord, self.ycord
 
 
 class Bullet(parent):
@@ -166,7 +163,6 @@ class Bullet(parent):
         self.rect.x = self.xcord
         if self.ycord < -10:
             pygame.sprite.Sprite.kill(self)
-        #self.rect.topleft = self.xcord, self.ycord
 
 class Surface(parent):
     def __init__(self):
