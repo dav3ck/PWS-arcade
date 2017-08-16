@@ -10,8 +10,9 @@ blue = (0,0,255)
 #lists
 bullets = pygame.sprite.Group() #list that will hold all the bullets
 balls = pygame.sprite.Group() #list that will hold all ze balls
-lines = pygame.sprite.Group()
+lines = pygame.sprite.Group() #list that holds all the lines in editor mode
 everything = pygame.sprite.Group() #list that will hold everything
+surfaces = pygame.sprite.Group() #lits that will hold all the floors and walls etc
 
 #sprite lists
 ballanimation = [] #[size [type [variatie [itteration]]]]
@@ -21,7 +22,7 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
     j1 = []
     k1 = []
     l1 = []
-    for j in range (1): #where the ball is in its bounce (type) 0 = in motion, 1 = on the ground
+    for j in range (2): #where the ball is in its bounce (type) 0 = in motion, 1 = on the ground
         legacy1 = legacy0 + "/type" + str(j)
         for k in range (1): #wich variation it is
             legacy2 = legacy1 + "/variation" + str(k)
@@ -57,7 +58,9 @@ class Ball(parent):
         self.weight = 0 #size of the parabole bigger number smaller parabole
         self.check = check #checks ball type
         self.sizenum = 0 #ball size number for animation
+        self.typenum = 0 #the type of the ball
         self.ittnum = 0 #what itteration ball animation is on
+        self.delay = 1 #delays the bounce for animation
         if check == 1: #biggest ball
             self.xspeed = 2
             self.dia = 100
@@ -93,23 +96,27 @@ class Ball(parent):
         
 
     def update(self):
-        self.yspeed -= self.weight #handles ball bouncing
-        self.ycord -= self.yspeed
-        if self.ycord >= (800 - self.dia): #REPLACE 800 W SCREEN HEIGHT
-            self.yspeed = 10
-
         self.xcord += self.xspeed #handles ball horizontal movement
         if self.xcord >= (1000 - self.dia) or self.xcord <= 0: #REPLACE 100 WITH SCREEN WIDTH
             self.xspeed *= -1
 
+        if self.typenum == 1:
+            self.delay = 0.5
+        else:
+            self.delay = 1
+
+        self.yspeed -= self.delay * self.weight #handles ball bouncing
+        self.ycord -= self.delay * self.yspeed
+
         self.timer += 1
-        if self.timer > 30:
+        if self.timer > (self.delay * 30):
             self.ittnum += 1
             self.timer = 0
             if self.ittnum > 4: #CHANGE THIS TO MATCH AMMOUNT OF FRAMES PER CYCLE -1
                 self.ittnum = 0
+                self.typenum = 0
 
-        self.image = pygame.image.load(ballanimation[self.sizenum][0][0][self.ittnum])
+        self.image = pygame.image.load(ballanimation[self.sizenum][self.typenum][0][self.ittnum])
         self.rect = self.image.get_rect()
         self.rect.x = self.xcord
         self.rect.y = self.ycord
@@ -119,7 +126,7 @@ class Player(parent):
     def __init__(self):
         super().__init__()
         self.xcord = 475 #x coördinate
-        self.ycord = 750 #y coördinate
+        self.ycord = 700 #y coördinate
         self.image = pygame.Surface([50,50])
         self.image.fill(green)
         self.rect = self.image.get_rect()
@@ -149,8 +156,15 @@ class Bullet(parent):
         if self.ycord < -10:
             pygame.sprite.Sprite.kill(self)
 
-
-        
+class Surface(parent):
+    def __init__(self):
+        super().__init__()
+        self.ycord = 750
+        self.image = pygame.Surface([1000,50])
+        self.image.fill(white)
+        self.rect = self.image.get_rect()
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
 
 
 
