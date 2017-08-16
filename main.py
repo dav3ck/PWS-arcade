@@ -41,7 +41,7 @@ while True:
             elif event.key == pygame.K_RIGHT:
                 player.xspeed = 5
             elif event.key == pygame.K_b:
-                ball = Ball(4,500,70)
+                ball = Ball(1,500,70)
             elif event.key == pygame.K_SPACE:
                 bullet = Bullet(player.xcord,player.ycord)
             elif event.key == pygame.K_e: #Enables Editor mode
@@ -80,15 +80,24 @@ while True:
     for ball in balls:
         hits = pygame.sprite.spritecollide(surface, balls, False)
         for ball in hits:
-            ball.yspeed = 10
-            ball.typenum = 1
+            if ball.typenum == 0:
+                ball.yspeed = 0
+                ball.xspeed = ball.xspeed / 10000
+                ball.weight = ball.weight / 10000
+                ball.typenum = 1
+                ball.ittnum = -1
+            
+                     
+ 
+            
 
     if (Score > 2 and len(balls) < 2) or spawntimer > 1800: #auto spawns balls
         ball = Ball(1,500,70)
         spawntimer = 0
 
-    everything.update()
     #Screen management
+    everything.update()
+        
     screen.fill(black)
     
     everything.draw(screen)
