@@ -16,7 +16,7 @@ pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 Score = 0
-timer = 0
+spawntimer = 0
 
 editor = False
 xlines = 50
@@ -27,6 +27,7 @@ pygame.display.set_caption('early pre-alfa')
 clock = pygame.time.Clock()
 
 player = Player() #creates the player
+surface = Surface()
 
 #main game loop
 while True:
@@ -40,7 +41,7 @@ while True:
             elif event.key == pygame.K_RIGHT:
                 player.xspeed = 5
             elif event.key == pygame.K_b:
-                ball = Ball(1,500,70)
+                ball = Ball(4,500,70)
             elif event.key == pygame.K_SPACE:
                 bullet = Bullet(player.xcord,player.ycord)
             elif event.key == pygame.K_e: #Enables Editor mode
@@ -53,9 +54,8 @@ while True:
     textsurface = myfont.render('Score: ' + str(Score), False, white)
 
     #Game logica
-    everything.update()
 
-    timer += 1
+    spawntimer += 1
 
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
@@ -76,11 +76,18 @@ while True:
                 ball = Ball(5,ball.xcord,ball.ycord)
             else:
                 Score += 1
+                
+    for ball in balls:
+        hits = pygame.sprite.spritecollide(surface, balls, False)
+        for ball in hits:
+            ball.yspeed = 10
+            ball.typenum = 1
 
-    if (Score > 3 and len(balls) < 2) or timer > 1800: #auto spawns balls
+    if (Score > 2 and len(balls) < 2) or spawntimer > 1800: #auto spawns balls
         ball = Ball(1,500,70)
-        timer = 0
+        spawntimer = 0
 
+    everything.update()
     #Screen management
     screen.fill(black)
     
