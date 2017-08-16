@@ -12,7 +12,8 @@ bullets = pygame.sprite.Group() #list that will hold all the bullets
 balls = pygame.sprite.Group() #list that will hold all ze balls
 lines = pygame.sprite.Group() #list that holds all the lines in editor mode
 everything = pygame.sprite.Group() #list that will hold everything
-surfaces = pygame.sprite.Group() #lits that will hold all the floors and walls etc
+walls = pygame.sprite.Group() #lits that will hold all the floors and walls etc
+players = pygame.sprite.Group()
 
 #sprite lists
 ballanimation = [] #[size [type [variatie [itteration]]]]
@@ -115,8 +116,8 @@ class Ball(parent):
             self.timer = 0
             if self.ittnum == 4:
                 self.yspeed = 10
-                self.xspeed = self.xspeed * 10000
-                self.weight = self.weight * 10000
+                self.xspeed *= 10000
+                self.weight *= 10000
                 self.ittnum = -1
                 self.typenum = 0
 
@@ -128,7 +129,16 @@ class Ball(parent):
         self.rect.x = self.xcord
         self.rect.y = self.ycord
 
-        
+class Wall(parent):
+    def __init__(self, x):
+        super().__init__()
+        self.xcord = x
+        self.image = pygame.Surface([5,800])
+        self.image.fill(white)
+        self.rect = self.image.get_rect()
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
+        walls.add(self)       
 
 class Player(parent):
     def __init__(self):
@@ -138,8 +148,17 @@ class Player(parent):
         self.image = pygame.Surface([50,50])
         self.image.fill(green)
         self.rect = self.image.get_rect()
+        players.add(self)
+
 
     def update(self):
+        hits = pygame.sprite.spritecollide(self, walls, False)
+        for block in hits:
+            if self.xspeed > 0:
+                self.rect.right = block.rect.left
+            else:
+                self.rect.left = block.rect.right
+
         self.xcord += self.xspeed #basic player movement
         self.ycord += self.yspeed
         self.rect.x = self.xcord
@@ -164,7 +183,7 @@ class Bullet(parent):
         if self.ycord < -10:
             pygame.sprite.Sprite.kill(self)
 
-class Surface(parent):
+class Floor(parent):
     def __init__(self):
         super().__init__()
         self.ycord = 750
@@ -173,6 +192,12 @@ class Surface(parent):
         self.rect = self.image.get_rect()
         self.rect.y = self.ycord
         self.rect.x = self.xcord
+
+
+    
+
+
+
         
 
 

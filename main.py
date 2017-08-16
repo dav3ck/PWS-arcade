@@ -16,7 +16,12 @@ pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 Score = 0
+
 spawntimer = 0
+
+ammo = 10
+player_xspeed = 5
+ammotimer = 0
 
 editor = False
 xlines = 50
@@ -27,7 +32,10 @@ pygame.display.set_caption('early pre-alfa')
 clock = pygame.time.Clock()
 
 player = Player() #creates the player
-surface = Surface()
+
+floor = Floor()
+wall = Wall(0) #left wall
+wall = Wall(995) #right wall
 
 #main game loop
 while True:
@@ -37,25 +45,37 @@ while True:
 
         elif event.type == pygame.KEYDOWN: #handles all keypresses
             if event.key == pygame.K_LEFT:
-                player.xspeed = -5
+                player.xspeed = -1 * player_xspeed
             elif event.key == pygame.K_RIGHT:
-                player.xspeed = 5
+                player.xspeed = player_xspeed
             elif event.key == pygame.K_b:
                 ball = Ball(1,500,70)
             elif event.key == pygame.K_SPACE:
-                bullet = Bullet(player.xcord,player.ycord)
+                if ammo > 0:
+                    bullet = Bullet(player.xcord,player.ycord)
+                    ammo -= 1
             elif event.key == pygame.K_e: #Enables Editor mode
-                editor = True
+                if editor == True:
+                    editor = False
+                else:
+                    editor = True
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player.xspeed = 0
             
-    #Score tekst
-    textsurface = myfont.render('Score: ' + str(Score), False, white)
+    #GUI text
+    scoretext = myfont.render('Score: ' + str(Score), False, white)
+    ammotext = myfont.render('Bullets: ' + str(ammo), False, white)
 
     #Game logica
 
     spawntimer += 1
+
+    if ammo == 0:
+        ammotimer += 1
+    if ammotimer == 180:
+        ammo = 10
+        ammotimer = 0
 
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
@@ -78,16 +98,25 @@ while True:
                 Score += 1
                 
     for ball in balls:
-        hits = pygame.sprite.spritecollide(surface, balls, False)
+        hits = pygame.sprite.spritecollide(floor, balls, False)
         for ball in hits:
             if ball.typenum == 0:
                 ball.yspeed = 0
-                ball.xspeed = ball.xspeed / 10000
-                ball.weight = ball.weight / 10000
+                ball.xspeed /= 10000
+                ball.weight /= 10000
                 ball.typenum = 1
                 ball.ittnum = -1
+
+    for ball in balls:
+        hits = pygame.sprite.spritecollide(wall, balls, False)
+        for ball in hits:
+            ball.xspeed *= -1
             
-                     
+    for player in players:
+        hits = pygame.sprite.spritecollide(player, walls, False)
+        for player in hits:
+            player.xspeed = 0
+            print("pain")
  
             
 
@@ -111,10 +140,12 @@ while True:
             ylines += 50
         xlines = 50
         ylines = 50
+        ammo = 666
 
     #Display tekst    
 
-    screen.blit(textsurface,(0,0)) 
+    screen.blit(scoretext,(12,0))
+    screen.blit(ammotext, (400, 0))
 
     #Flip
     
