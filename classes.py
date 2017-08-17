@@ -14,15 +14,16 @@ lines = pygame.sprite.Group() #list that holds all the lines in editor mode
 everything = pygame.sprite.Group() #list that will hold everything
 walls = pygame.sprite.Group() #lits that will hold all the floors and walls etc
 players = pygame.sprite.Group()
+upgrades = pygame.sprite.Group()
 
 #sprite lists
-ballanimation = [] #[size [type [variatie [itteration]]]]
+ballanimation = [] #[size[type[variation[itteration]]]]
 l1 = []
 k1 = []
 j1 = []
 
 for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
-    legacy0 = "Sprites/size" + str(i)
+    legacy0 = "Sprites/balls/size" + str(i)
     for j in range (2): #where the ball is in its bounce (type) 0 = in motion, 1 = on the ground
         legacy1 = legacy0 + "/type" + str(j)
         for k in range (3): #wich variation it is
@@ -37,10 +38,6 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
         k1 = []
     ballanimation.append(j1)
     j1 = []
-
-            
-            
-            
 
 #class defenitions
 class parent(pygame.sprite.Sprite):
@@ -67,34 +64,34 @@ class Ball(parent):
         self.xspeed2 = 0
         self.weight2 = 0
         if check == 1: #biggest ball
-            self.xspeed = 2
+            self.xspeed = -2
             self.dia = 100
             self.weight = 0.1
-            self.image = pygame.image.load("Sprites/size0/type0/variation0/itteration0.png")
+            self.image = pygame.image.load("Sprites/balls/size0/type0/variation0/itteration0.png")
         elif check == 2: #medium ball right
             self.xspeed = 4
             self.dia = 50
             self.weight = 0.2
             self.sizenum = 1
-            self.image = pygame.image.load("Sprites/size1/type0/variation0/itteration0.png")
+            self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png")
         elif check == 3: #medium ball left
             self.xspeed = -4
             self.dia = 50
             self.weight = 0.2
             self.sizenum = 1
-            self.image = pygame.image.load("Sprites/size1/type0/variation0/itteration0.png")
+            self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png")
         elif check == 4: #small ball right
             self.xspeed = 7
             self.dia = 25
             self.weight = 0.3
             self.sizenum = 2
-            self.image = pygame.image.load("Sprites/size2/type0/variation0/itteration0.png")
+            self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png")
         elif check == 5: #small ball left
             self.xspeed = -7
             self.dia = 25
             self.weight = 0.3
             self.sizenum = 2
-            self.image = pygame.image.load("Sprites/size2/type0/variation0/itteration0.png")
+            self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png")
             
         self.rect = self.image.get_rect()
         balls.add(self)
@@ -144,6 +141,7 @@ class Player(parent):
         self.reducer = 1
         self.xcord = 475 #x coördinate
         self.ycord = 700 #y coördinate
+        self.ammo = 10
         self.image = pygame.Surface([50,50])
         self.image.fill(green)
         self.rect = self.image.get_rect()
@@ -152,6 +150,9 @@ class Player(parent):
     def changespeed(self,x):
         self.xspeed += x
 
+    def reload(self):
+        self.ammo = 0
+        print("reloading")
 
     def update(self):
         self.xcord += (self.xspeed * self.reducer) #basic player movement
@@ -195,5 +196,17 @@ class Floor(parent):
 
         
 
+#Powerups 
 
+class Upgrade(parent):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface([50,50])
+        self.image.fill(blue)
+        self.rect = self.image.get_rect()
+        self.rect.y = 700
+        self.rect.x = 32
+        upgrades.add(self)
 
+    def ammo():
+        player.ammo = 20

@@ -1,7 +1,7 @@
 #libraries management
 import pygame
 pygame.init()
-from classes import * #imports all from classes, removes the need for "classes." prepend
+from classes import * #imports all from classes, removes the need for "classes."prepend
 
 black = (0, 0, 0) #colour variables (MAY NEED TO BE REMOVED AFTER BITMAPS)
 white = (255, 255, 255)
@@ -33,11 +33,11 @@ pygame.display.set_caption('early pre-alfa')
 clock = pygame.time.Clock()
 
 player = Player() #creates the player
+upgrade = Upgrade()
 
 floor = Floor()
 wall = Wall(0) #left wall
 wall = Wall(995) #right wall
-
 
 #main game loop
 while True:
@@ -53,14 +53,16 @@ while True:
             elif event.key == pygame.K_b:
                 ball = Ball(1,500,70)
             elif event.key == pygame.K_SPACE:
-                if ammo > 0:
+                if player.ammo > 0:
                     bullet = Bullet(player.xcord,player.ycord)
-                    ammo -= 1
+                    player.ammo -= 1
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
                 else:
                     editor = True
+            elif event.key == pygame.K_r:
+                player.reload()
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT:
                 player.changespeed(5)
@@ -69,17 +71,17 @@ while True:
 
     #GUI text
     scoretext = myfont.render('Score: ' + str(Score), False, white)
-    ammotext = myfont.render('Bullets: ' + str(ammo), False, white)
+    ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
 
     #Game logica
 
     spawntimer += 1
 
-    if ammo == 0:
+    if player.ammo == 0:
         player.reducer = 0.5
         ammotimer += 1
     if ammotimer == 180:
-        ammo = 10
+        player.ammo = 10
         player.reducer = 1
         ammotimer = 0
 
@@ -121,10 +123,12 @@ while True:
             elif ball.xspeed < 0 and ball.typenum == 1:
                 ball.xcord += 10
             ball.xspeed *= -1
-            print("wtf")
-            print(ball.xcord)
 
-            
+    for player in players:
+        hits = pygame.sprite.spritecollide(player, upgrades, True)
+        for upgrade in hits:
+            #player.ammo = 20
+            upgrade.ammo()
             
 
     if ((Score > 2 and len(balls) < 2) or spawntimer > 1800) and editor == False: #auto spawns balls
@@ -152,7 +156,7 @@ while True:
             ylines += 50
         xlines = 50
         ylines = 50
-        ammo = 666
+        player.ammo = 666
 
     #Display tekst    
 
