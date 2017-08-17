@@ -139,6 +139,7 @@ class Player(parent):
     def __init__(self):
         super().__init__()
         self.reducer = 1
+        self.reducerup = 1
         self.xcord = 475 #x coördinate
         self.ycord = 700 #y coördinate
         self.ammo = 10
@@ -155,7 +156,7 @@ class Player(parent):
         print("reloading")
 
     def update(self):
-        self.xcord += (self.xspeed * self.reducer) #basic player movement
+        self.xcord += (self.xspeed * (self.reducer * self.reducerup)) #basic player movement
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
         self.rect.y = self.ycord
@@ -199,14 +200,23 @@ class Floor(parent):
 #Powerups 
 
 class Upgrade(parent):
-    def __init__(self):
+    def __init__(self,check):
         super().__init__()
         self.image = pygame.Surface([50,50])
         self.image.fill(blue)
         self.rect = self.image.get_rect()
-        self.rect.y = 700
-        self.rect.x = 32
+        self.ycord = 700
+        self.xcord = 32
+        self.timer = 0
+        self.check = check
         upgrades.add(self)
 
-    def ammo():
-        player.ammo = 20
+    def vanish(self):
+        self.image = pygame.Surface([0,0])
+        self.xcord = 0
+        self.ycord = 0
+
+    def update(self):
+        self.timer += 1
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord

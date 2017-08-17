@@ -33,7 +33,6 @@ pygame.display.set_caption('early pre-alfa')
 clock = pygame.time.Clock()
 
 player = Player() #creates the player
-upgrade = Upgrade()
 
 floor = Floor()
 wall = Wall(0) #left wall
@@ -76,6 +75,9 @@ while True:
     #Game logica
 
     spawntimer += 1
+
+    if spawntimer == 3:
+        upgrade = Upgrade(1)
 
     if player.ammo == 0:
         player.reducer = 0.5
@@ -125,15 +127,20 @@ while True:
             ball.xspeed *= -1
 
     for player in players:
-        hits = pygame.sprite.spritecollide(player, upgrades, True)
+        hits = pygame.sprite.spritecollide(player, upgrades, False)
         for upgrade in hits:
-            #player.ammo = 20
-            upgrade.ammo()
-            
-
-    if ((Score > 2 and len(balls) < 2) or spawntimer > 1800) and editor == False: #auto spawns balls
+            if upgrade.check == 0: player.ammo = 20
+            elif upgrade.check == 1:
+                player.reducerup = 2
+                upgrade.timerlim = 1800
+                upgrade.vanish()
+                
+    for upgrade in upgrades:
+        if upgrade.timer > 600 and upgrade.check ==1:
+                player.reducerup = 1
+                
+    if ((Score > 2 and len(balls) < 2) or (spawntimer % 1800 == 0) and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
-        spawntimer = 0
 
     #Screen management
     everything.update()
