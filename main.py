@@ -63,7 +63,7 @@ while True:
             elif event.key == pygame.K_r:
                 player.reload()
             elif event.key == pygame.K_p:
-                upgrade = Upgrade(2)
+                upgrade = Upgrade(1)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT:
                 player.changespeed(5)
@@ -73,6 +73,7 @@ while True:
     #GUI text
     scoretext = myfont.render('Score: ' + str(Score), False, white)
     ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
+    livetext = myfont.render('lives: ' + str(player.lives), False, white)
 
     #Game logica
 
@@ -94,7 +95,9 @@ while True:
         for ball in hits:
             if ball.typenum == 0:
                 ball.yspeed = 9.5
-            player.image.fill(white)
+            if player.invisibility == False:
+                player.lives -= 1
+                player.invisibility = True
                 
     for bullet in bullets:
         hits = pygame.sprite.spritecollide(bullet, balls, True) #bullet on ball collisions
@@ -165,7 +168,7 @@ while True:
     for upgrade in upgrades:
         if upgrade.timer > 600 and upgrade.check ==1:
                 player.reducerup = 1
-                pygame.sprites.Sprites.kill(upgrade)
+                pygame.sprite.Sprite.kill(upgrade)
                 
     if ((Score > 2 and len(balls) < 2) or (spawntimer % 1800 == 0) and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
@@ -197,6 +200,7 @@ while True:
 
     screen.blit(scoretext,(12,0))
     screen.blit(ammotext, (400, 0))
+    screen.blit(livetext, (800, 0))
 
     #Flip
     

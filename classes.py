@@ -138,6 +138,9 @@ class Wall(parent):
 class Player(parent):
     def __init__(self):
         super().__init__()
+        self.invisibility = False
+        self.invisibility_timer = 0
+        self.lives = 3
         self.reducer = 1
         self.reducerup = 1
         self.xcord = 475 #x coördinate
@@ -160,6 +163,19 @@ class Player(parent):
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
         self.rect.y = self.ycord
+
+        if self.invisibility == True:
+            self.invisibility_timer += 1
+            if self.invisibility_timer % 20 == 0:
+                self.image.fill(red)
+            elif self.invisibility_timer % 20 == 10:
+                self.image.fill(green)
+            if self.invisibility_timer > 180:
+                self.invisibility = False
+                self.invisibility_timer = 0
+                self.image.fill(green)
+        
+                
 
 
 class Bullet(parent):
