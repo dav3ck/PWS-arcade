@@ -20,7 +20,6 @@ Score = 0
 spawntimer = 0
 
 ammo = 10
-player_xspeed = 5
 ammotimer = 0
 
 editor = False
@@ -37,6 +36,7 @@ floor = Floor()
 wall = Wall(0) #left wall
 wall = Wall(995) #right wall
 
+
 #main game loop
 while True:
     for event in pygame.event.get(): #handles closing the window
@@ -45,9 +45,9 @@ while True:
 
         elif event.type == pygame.KEYDOWN: #handles all keypresses
             if event.key == pygame.K_LEFT:
-                player.xspeed = -1 * player_xspeed
+                player.changespeed(-5)
             elif event.key == pygame.K_RIGHT:
-                player.xspeed = player_xspeed
+                player.changespeed(5)
             elif event.key == pygame.K_b:
                 ball = Ball(1,500,70)
             elif event.key == pygame.K_SPACE:
@@ -60,9 +60,11 @@ while True:
                 else:
                     editor = True
         elif event.type == pygame.KEYUP: #handles all key releases
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                player.xspeed = 0
-            
+            if event.key == pygame.K_LEFT:
+                player.changespeed(5)
+            elif event.key == pygame.K_RIGHT:
+                player.changespeed(-5)
+
     #GUI text
     scoretext = myfont.render('Score: ' + str(Score), False, white)
     ammotext = myfont.render('Bullets: ' + str(ammo), False, white)
@@ -112,12 +114,6 @@ while True:
         for ball in hits:
             ball.xspeed *= -1
             
-    for player in players:
-        hits = pygame.sprite.spritecollide(player, walls, False)
-        for player in hits:
-            player.xspeed = 0
-            print("pain")
- 
             
 
     if (Score > 2 and len(balls) < 2) or spawntimer > 1800: #auto spawns balls

@@ -150,17 +150,13 @@ class Player(parent):
         self.rect = self.image.get_rect()
         players.add(self)
 
+    def changespeed(self,x):
+        self.xspeed += x
+
 
     def update(self):
-        hits = pygame.sprite.spritecollide(self, walls, False)
-        for block in hits:
-            if self.xspeed > 0:
-                self.rect.right = block.rect.left
-            else:
-                self.rect.left = block.rect.right
-
         self.xcord += self.xspeed #basic player movement
-        self.ycord += self.yspeed
+        self.ycord += self.yspeed        
         self.rect.x = self.xcord
         self.rect.y = self.ycord
 
