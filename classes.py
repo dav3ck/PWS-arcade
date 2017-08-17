@@ -102,8 +102,6 @@ class Ball(parent):
 
     def update(self):
         self.xcord += self.xspeed #handles ball horizontal movement
-        if self.xcord >= (1000) or self.xcord <= 0: #REPLACE 100 WITH SCREEN WIDTH
-            self.xspeed *= -1
 
         self.timer += 1
         if self.timer > 30 and self.typenum == 0:
@@ -143,6 +141,7 @@ class Wall(parent):
 class Player(parent):
     def __init__(self):
         super().__init__()
+        self.reducer = 1
         self.xcord = 475 #x coördinate
         self.ycord = 700 #y coördinate
         self.image = pygame.Surface([50,50])
@@ -155,7 +154,7 @@ class Player(parent):
 
 
     def update(self):
-        self.xcord += self.xspeed #basic player movement
+        self.xcord += (self.xspeed * self.reducer) #basic player movement
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
         self.rect.y = self.ycord

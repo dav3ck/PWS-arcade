@@ -22,11 +22,13 @@ spawntimer = 0
 ammo = 10
 ammotimer = 0
 
+
 editor = False
 xlines = 50
 ylines = 50
 
 screen = pygame.display.set_mode((1000,800)) #setsup window
+screen_rect=screen.get_rect()
 pygame.display.set_caption('early pre-alfa')
 clock = pygame.time.Clock()
 
@@ -74,9 +76,11 @@ while True:
     spawntimer += 1
 
     if ammo == 0:
+        player.reducer = 0.5
         ammotimer += 1
     if ammotimer == 180:
         ammo = 10
+        player.reducer = 1
         ammotimer = 0
 
     for ball in balls:
@@ -110,18 +114,30 @@ while True:
                 ball.ittnum = -1
 
     for ball in balls:
-        hits = pygame.sprite.spritecollide(wall, balls, False)
-        for ball in hits:
+        hits = pygame.sprite.spritecollide(ball, walls, False)
+        for wall in hits:
+            if ball.xspeed > 0 and ball.typenum == 1:
+                ball.xcord -= 10
+            elif ball.xspeed < 0 and ball.typenum == 1:
+                ball.xcord += 10
             ball.xspeed *= -1
+            print("wtf")
+            print(ball.xcord)
+
             
             
 
-    if (Score > 2 and len(balls) < 2) or spawntimer > 1800: #auto spawns balls
+    if ((Score > 2 and len(balls) < 2) or spawntimer > 1800) and editor == False: #auto spawns balls
         ball = Ball(1,500,70)
         spawntimer = 0
 
     #Screen management
     everything.update()
+
+    if player.xcord > (withd - 50):
+        player.xcord = (withd - 50)
+    elif player.xcord < 0:
+        player.xcord = 0
         
     screen.fill(black)
     
