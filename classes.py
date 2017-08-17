@@ -1,4 +1,5 @@
 import pygame
+import random
 
 #colour variables REMOVE WHEN BITMAPS ARE IMPLEMENTED
 black = (0, 0, 0) 
@@ -61,8 +62,7 @@ class Ball(parent):
         self.sizenum = 0 #ball size number for animation
         self.typenum = 0 #the type of the ball
         self.ittnum = 0 #what itteration ball animation is on
-        self.xspeed2 = 0
-        self.weight2 = 0
+        self.launch = 10
         if check == 1: #biggest ball
             self.xspeed = -2
             self.dia = 100
@@ -110,7 +110,7 @@ class Ball(parent):
             self.ittnum += 1
             self.timer = 0
             if self.ittnum == 4:
-                self.yspeed = 10
+                self.yspeed = self.launch
                 self.xspeed *= 10000
                 self.weight *= 10000
                 self.ittnum = -1
@@ -205,8 +205,15 @@ class Upgrade(parent):
         self.image = pygame.Surface([50,50])
         self.image.fill(blue)
         self.rect = self.image.get_rect()
-        self.ycord = 700
-        self.xcord = 32
+        self.ycord = random.randrange(20,400)
+        self.despawn = 0
+        self.detimer = 0
+        if random.randrange(2) == 1:
+            self.xcord = 1000
+            self.xspeed = -1
+        else:
+            self.xcord = -50
+            self.xspeed = 1
         self.timer = 0
         self.check = check
         upgrades.add(self)
@@ -218,5 +225,10 @@ class Upgrade(parent):
 
     def update(self):
         self.timer += 1
+        self.despawn += self.detimer
+        self.xcord += self.xspeed
+        self.ycord += self.yspeed
         self.rect.y = self.ycord
         self.rect.x = self.xcord
+        if self.xcord < -100 or self.xcord > 1100 or self.despawn > 300:
+            pygame.sprite.Sprite.kill(self)

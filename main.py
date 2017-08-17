@@ -62,6 +62,8 @@ while True:
                     editor = True
             elif event.key == pygame.K_r:
                 player.reload()
+            elif event.key == pygame.K_p:
+                upgrade = Upgrade(2)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT:
                 player.changespeed(5)
@@ -76,14 +78,14 @@ while True:
 
     spawntimer += 1
 
-    if spawntimer == 3:
-        upgrade = Upgrade(1)
-
     if player.ammo == 0:
         player.reducer = 0.5
         ammotimer += 1
     if ammotimer == 180:
         player.ammo = 10
+        player.reducer = 1
+        ammotimer = 0
+    if player.ammo > 0 and ammotimer > 0:
         player.reducer = 1
         ammotimer = 0
 
@@ -126,24 +128,50 @@ while True:
                 ball.xcord += 10
             ball.xspeed *= -1
 
-    for player in players:
+    for upgrade in upgrades:
         hits = pygame.sprite.spritecollide(player, upgrades, False)
         for upgrade in hits:
-            if upgrade.check == 0: player.ammo = 20
-            elif upgrade.check == 1:
-                player.reducerup = 2
-                upgrade.timerlim = 1800
+            if upgrade.check == 0: #extera ammo
+                player.ammo = 20
                 upgrade.vanish()
+                pygame.sprite.Sprite.kill(upgrade)
+            elif upgrade.check == 1: #speed up
+                player.reducerup = 2
+                upgrade.vanish()
+            elif upgrade.check == 2: #slimes slow
+                for ball in balls:
+                    if ball.ycord < 700:
+                        ball.xspeed = 0
+                        ball.yspeed = 0
+                        ball.weight = 0
+                        ball.launch = 0
+                upgrade.vanish()
+
+    for bullet in bullets:
+        hits = pygame.sprite.spritecollide(bullet, upgrades, False)
+        for upgrade in hits:
+            upgrade.yspeed = 5
+            upgrade.xspeed = 0
+            pygame.sprite.Sprite.kill(bullet)
+
+    for upgrade in upgrades:
+        hits = pygame.sprite.spritecollide(floor, upgrades, False)
+        for upgrade in hits:
+            upgrade.yspeed = 0
+            upgrade.detimer = 1
+                
+                
                 
     for upgrade in upgrades:
         if upgrade.timer > 600 and upgrade.check ==1:
                 player.reducerup = 1
+                pygame.sprites.Sprites.kill(upgrade)
                 
     if ((Score > 2 and len(balls) < 2) or (spawntimer % 1800 == 0) and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 
-    #Screen management
     everything.update()
+    #Screen management
 
     if player.xcord > (withd - 50):
         player.xcord = (withd - 50)
