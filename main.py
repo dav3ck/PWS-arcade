@@ -1,5 +1,6 @@
 #libraries management
 import pygame
+import math
 pygame.init()
 from classes import * #imports all from classes, removes the need for "classes."prepend
 
@@ -50,9 +51,10 @@ while True:
             elif event.key == pygame.K_b: #spawn a ball 
                 ball = Ball(1,500,70)
             elif event.key == pygame.K_SPACE: #shoot button
-                if player.ammo > 0:
-                    bullet = Bullet(player.xcord,player.ycord)
-                    player.ammo -= 1
+                if player.alive == True:
+                    if player.ammo > 0:
+                        bullet = Bullet(player.xcord,player.ycord)
+                        player.ammo -= 1
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
@@ -62,6 +64,13 @@ while True:
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
                 upgrade = Upgrade(3)
+            elif event.key == pygame.K_q: #reset
+                for sprite in everything:
+                    pygame.sprite.Sprite.kill(sprite)
+                player = Player()
+                floor = Floor()
+                wall = Wall(0)
+                wall = Wall(995)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 player.changespeed(5)
@@ -152,7 +161,6 @@ while True:
         for upgrade in hits:
             if upgrade.check == 0: #extera ammo
                 player.ammo = 20
-                upgrade.vanish()
                 pygame.sprite.Sprite.kill(upgrade)
             elif upgrade.check == 1: #speed up
                 player.reducerup = 2
@@ -164,7 +172,6 @@ while True:
                         ball.yspeed = 0
                         ball.weight = 0
                         ball.launch = 0
-                upgrade.vanish()
                 pygame.sprite.Sprite.kill(upgrade)
             elif upgrade.check == 3: #extera life
                 player.lives += 1
@@ -176,7 +183,7 @@ while True:
                 pygame.sprites.Sprites.kill(upgrade)
 
                 
-    if ((player.score > 2 and len(balls) < 2) or (spawntimer % 1800 == 0) and editor == False): #auto spawns balls
+    if ((player.score > 2 and len(balls) < 2) or (spawntimer % int(-142 * math.sqrt(player.score) + 1800) == 0) and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 
     everything.update()
@@ -210,6 +217,7 @@ while True:
     screen.blit(lifetext, (700, 0))
     if player.alive == False:
         screen.blit(deadtext, (200, 300))
+        spawntimer = 0
 
     #Flip
     
