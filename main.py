@@ -79,6 +79,9 @@ while True:
 
     spawntimer += 1
 
+    if spawntimer == 3:
+        ball = Ball(1,500,70)
+
     if player.ammo == 0: #reload mechanics
         player.reducer = 0.5
         player.ammotimer += 1
