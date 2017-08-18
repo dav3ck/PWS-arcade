@@ -246,6 +246,32 @@ class Upgrade(parent):
         self.xcord = 0
         self.ycord = 0
 
+    def powerup(self,player,ball,balls):
+        if self.check == 0: #extera ammo
+            player.ammo = 20
+            pygame.sprite.Sprite.kill(self)
+        elif self.check == 1: #speed up
+            player.reducerup = 2
+            self.timer = 0
+            self.vanish()
+        elif self.check == 2: #slimes slow
+            for ball in balls:
+                if ball.ycord < 700:
+                    ball.xspeed = 0
+                    ball.yspeed = 0
+                    ball.weight = 0
+                    ball.launch = 0
+            pygame.sprite.Sprite.kill(self)
+        elif self.check == 3: #extera life
+            player.lives += 1
+            pygame.sprite.Sprite.kill(self)
+        self.detimer = 0
+
+    def powerdown(self,player,ball,balls):
+        if self.timer > 600 and self.check ==1:
+            player.reducerup = 1
+            pygame.sprite.Sprite.kill(self)
+
     def update(self):
         self.timer += 1
         self.despawn += self.detimer
@@ -255,3 +281,4 @@ class Upgrade(parent):
         self.rect.x = self.xcord
         if self.xcord < -100 or self.xcord > 1100 or self.despawn > 300:
             pygame.sprite.Sprite.kill(self)
+            print("despawn")

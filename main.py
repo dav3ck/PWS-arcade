@@ -63,7 +63,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(3)
+                upgrade = Upgrade(1)
             elif event.key == pygame.K_q: #reset
                 for sprite in everything:
                     pygame.sprite.Sprite.kill(sprite)
@@ -94,7 +94,7 @@ while True:
     if player.ammo == 0: #reload mechanics
         player.reducer = 0.5
         player.ammotimer += 1
-        if player.ammotimer == 180:
+        if player.ammotimer == 120:
             player.ammo = 10
             player.reducer = 1
             player.ammotimer = 0
@@ -159,28 +159,10 @@ while True:
     for upgrade in upgrades: #runs the powerups
         hits = pygame.sprite.spritecollide(player, upgrades, False)
         for upgrade in hits:
-            if upgrade.check == 0: #extera ammo
-                player.ammo = 20
-                pygame.sprite.Sprite.kill(upgrade)
-            elif upgrade.check == 1: #speed up
-                player.reducerup = 2
-                upgrade.vanish()
-            elif upgrade.check == 2: #slimes slow
-                for ball in balls:
-                    if ball.ycord < 700:
-                        ball.xspeed = 0
-                        ball.yspeed = 0
-                        ball.weight = 0
-                        ball.launch = 0
-                pygame.sprite.Sprite.kill(upgrade)
-            elif upgrade.check == 3: #extera life
-                player.lives += 1
-                pygame.sprite.Sprite.kill(upgrade)
+            upgrade.powerup(player,ball,balls)
                                                 
     for upgrade in upgrades: #ends the powerups
-        if upgrade.timer > 600 and upgrade.check ==1:
-                player.reducerup = 1
-                pygame.sprites.Sprites.kill(upgrade)
+        upgrade.powerdown(player,ball,balls)
 
                 
     if ((player.score > 2 and len(balls) < 2) or (spawntimer % int(-142 * math.sqrt(player.score) + 1800) == 0) and editor == False): #auto spawns balls
