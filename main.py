@@ -1,6 +1,7 @@
 #libraries management
 import pygame
 import math
+import random
 pygame.init()
 from classes import * #imports all from classes, removes the need for "classes."prepend
 
@@ -167,6 +168,12 @@ while True:
                 
     if ((player.score > 2 and len(balls) < 2) or (spawntimer % int(-142 * math.sqrt(player.score) + 1800) == 0) and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
+
+    if spawntimer % 900 == 0: 
+        if spawntimer % 2700 == 0:
+            upgrade = Upgrade(random.randrange(100,101))
+        else:
+            upgrade = Upgrade(random.randrange(3))
 
     everything.update()
     #Screen management
