@@ -7,7 +7,7 @@ zorg dat alle files hun naam behouden (behalve main)
 leaderboard,
 opening screen,
 ...death,
-life powerup (s(?)),
+...life powerup (s(?)),
 p up groepen,
 p up spawning,
 multiplier,
