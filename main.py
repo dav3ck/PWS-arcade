@@ -14,6 +14,7 @@ height = 800 #Hoogte van scherm
 
 pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
+deadfont = pygame.font.SysFont('Comic Sans MS', 100)
 
 spawntimer = 0
 
@@ -46,7 +47,7 @@ while True:
                 player.changespeed(-5)
             elif event.key == pygame.K_RIGHT: #move right
                 player.changespeed(5)
-            elif event.key == pygame.K_b: #spawn a ball
+            elif event.key == pygame.K_b: #spawn a ball 
                 ball = Ball(1,500,70)
             elif event.key == pygame.K_SPACE: #shoot button
                 if player.ammo > 0:
@@ -71,6 +72,8 @@ while True:
     scoretext = myfont.render('Score: ' + str(player.score), False, white)
     ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
     lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
+    deadtext = deadfont.render('U diededed', False, red)
+    
 
     #Game logica
 
@@ -198,6 +201,8 @@ while True:
     screen.blit(scoretext,(12,0))
     screen.blit(ammotext, (400, 0))
     screen.blit(lifetext, (700, 0))
+    if player.alive == False:
+        screen.blit(deadtext, (200, 300))
 
     #Flip
     

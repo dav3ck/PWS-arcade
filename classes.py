@@ -148,6 +148,7 @@ class Player(parent):
         self.ammotimer = 0
         self.immune = False
         self.immunetimer = 0
+        self.alive = True
         self.image = pygame.Surface([50,50])
         self.image.fill(green)
         self.rect = self.image.get_rect()
@@ -166,11 +167,18 @@ class Player(parent):
             if self.immunetimer % 20 == 0:
                 self.image.fill(red)
             elif self.immunetimer % 20 == 10:
-                self.image.fill(green)
+                self.image.fill(white)
             if self.immunetimer > 120:
                 self.immune = False
                 self.image.fill(green)
                 self.immunetimer = 0
+            if self.lives <= 0:
+                self.alive = False
+        if self.alive == False:
+            self.xspeed = 0
+            self.yspeed = 0
+            self.image.fill(red)
+            self.lives = 0
         self.xcord += (self.xspeed * (self.reducer * self.reducerup)) #basic player movement
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
