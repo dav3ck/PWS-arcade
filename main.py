@@ -61,7 +61,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(2)
+                upgrade = Upgrade(3)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 player.changespeed(5)
@@ -165,6 +165,10 @@ while True:
                         ball.weight = 0
                         ball.launch = 0
                 upgrade.vanish()
+                pygame.sprite.Sprite.kill(upgrade)
+            elif upgrade.check == 3: #extera life
+                player.lives += 1
+                pygame.sprite.Sprite.kill(upgrade)
                                                 
     for upgrade in upgrades: #ends the powerups
         if upgrade.timer > 600 and upgrade.check ==1:

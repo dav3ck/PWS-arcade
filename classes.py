@@ -229,8 +229,8 @@ class Upgrade(parent):
         self.image.fill(blue)
         self.rect = self.image.get_rect()
         self.ycord = random.randrange(20,400)
-        self.despawn = 0
-        self.detimer = 0
+        self.despawn = 0 # These two are for
+        self.detimer = 0 # despawning on the floor
         if random.randrange(2) == 1:
             self.xcord = 1000
             self.xspeed = -1
