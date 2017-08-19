@@ -273,7 +273,7 @@ class Upgrade(parent):
             if self.timer > 600 and self.check ==1:
                 player.reducerup = 1
                 pygame.sprite.Sprite.kill(self)
-            if self.timer > 1800 and self.check == 2:
+            if self.timer > 1800 and self.check == 2: #1800
                 ball.xspeed *= 1000
                 ball.yspeed *= 1000
                 ball.weight *= 1000
@@ -281,8 +281,8 @@ class Upgrade(parent):
 
     def vanish(self):
         self.image = pygame.Surface([0,0])
-        self.xcord = -100
-        self.ycord = 0
+        self.xcord = -49
+        self.ycord = 200
 
     def update(self):
         self.timer += 1
