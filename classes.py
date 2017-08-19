@@ -231,6 +231,7 @@ class Upgrade(parent):
         self.ycord = random.randrange(20,400)
         self.despawn = 0 # These two are for
         self.detimer = 0 # despawning on the floor
+        self.active = False
         if random.randrange(2) == 1:
             self.xcord = 1000
             self.xspeed = -1
@@ -241,13 +242,9 @@ class Upgrade(parent):
         self.check = check
         upgrades.add(self)
 
-    def vanish(self):
-        self.image = pygame.Surface([50,50])
-        self.xcord = 0
-        self.ycord = 0
-
     def powerup(self,player,ball,balls):
         self.detimer = 0
+        self.active = True
         #zwakke powerups
         if self.check == 0: #extera ammo
             player.ammo = 20
@@ -269,17 +266,23 @@ class Upgrade(parent):
                     ball.weight /= 1000
                     ball.launch = 0
                     self.timer = 0
-                self.vanish
+            self.vanish()
 
     def powerdown(self,player,ball,balls):
-        if self.timer > 600 and self.check ==1:
-            player.reducerup = 1
-            pygame.sprite.Sprite.kill(self)
-        if self.timer > 1800 and self.check == 2:
-            ball.xspeed *= 1000
-            ball.yspeed *= 1000
-            ball.weight *= 1000
-            ball.launch = 10            
+        if self.active == True:
+            if self.timer > 600 and self.check ==1:
+                player.reducerup = 1
+                pygame.sprite.Sprite.kill(self)
+            if self.timer > 1800 and self.check == 2:
+                ball.xspeed *= 1000
+                ball.yspeed *= 1000
+                ball.weight *= 1000
+                ball.launch = 10
+
+    def vanish(self):
+        self.image = pygame.Surface([0,0])
+        self.xcord = -10
+        self.ycord = 0
 
     def update(self):
         self.timer += 1
