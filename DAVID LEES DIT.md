@@ -15,7 +15,9 @@ multiplier,
 ...score based ball spawn,
 selection menu,
 ...restart after death,
-multiple spawn points
+multiple ball spawn points
+artificial ball spawn intervall limit.
+fix freeze powerup not ending
 
 optional:
 storymode
