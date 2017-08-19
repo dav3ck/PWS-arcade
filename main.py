@@ -150,16 +150,16 @@ while True:
             upgrade.yspeed = 0
             upgrade.detimer = 1
 
-    for bullet in bullets: #shoot the upgrades down
-        hits = pygame.sprite.spritecollide(bullet, upgrades, False)
-        for upgrade in hits:
+    for upgrade in upgrades: #shoot the upgrades down
+        hits = pygame.sprite.spritecollide(upgrade, bullets, False)
+        for bullet in hits:
             upgrade.yspeed = 5
             upgrade.xspeed = 0
             pygame.sprite.Sprite.kill(bullet)
 
     for upgrade in upgrades: #runs the powerups
-        hits = pygame.sprite.spritecollide(player, upgrades, False)
-        for upgrade in hits:
+        hits = pygame.sprite.spritecollide(upgrade, players, False)
+        for player in hits:
             upgrade.powerup(player,ball,balls)
                                                 
     for upgrade in upgrades: #ends the powerups

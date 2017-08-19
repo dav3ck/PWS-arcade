@@ -8,13 +8,14 @@ leaderboard,
 opening screen,
 ...death,
 ...life powerup (s(?)),
-p up groepen,
-p up spawning,
+...p up groepen,
+...p up spawning,
 multiplier,
 ...first ball spawn,
-score based ball spawn,
+...score based ball spawn,
 selection menu,
-restart after death,
+...restart after death,
+multiple spawn points
 
 optional:
 storymode
