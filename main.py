@@ -64,7 +64,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(1)
+                upgrade = Upgrade(100)
             elif event.key == pygame.K_q: #reset
                 for sprite in everything:
                     pygame.sprite.Sprite.kill(sprite)
@@ -88,7 +88,7 @@ while True:
     #Game logica
 
     spawntimer += 1
-
+    
     if spawntimer == 3:
         ball = Ball(1,500,70)
 
@@ -103,6 +103,7 @@ while True:
         player.reducer = 1
         player.ammotimer = 0
 
+    #colisions
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
         for ball in hits:
@@ -165,7 +166,7 @@ while True:
     for upgrade in upgrades: #ends the powerups
         upgrade.powerdown(player,ball,balls)
 
-                
+    #spawning                
     if ((player.score > 2 and len(balls) < 2) or (spawntimer % int(-142 * math.sqrt(player.score) + 1800) == 0) and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 

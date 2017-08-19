@@ -281,7 +281,7 @@ class Upgrade(parent):
 
     def vanish(self):
         self.image = pygame.Surface([0,0])
-        self.xcord = -10
+        self.xcord = -100
         self.ycord = 0
 
     def update(self):
