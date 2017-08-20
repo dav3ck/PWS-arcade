@@ -16,7 +16,7 @@ multiplier,
 selection menu,
 ...restart after death,
 multiple ball spawn points
-artificial ball spawn intervall limit.
+...artificial ball spawn intervall limit.
 ...fix freeze powerup not ending
 
 optional:
