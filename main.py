@@ -81,7 +81,7 @@ while True:
                 player.changespeed(-5)
 
     #GUI text
-    scoretext = myfont.render('Score: ' + str(player.score), False, white)
+    scoretext = myfont.render('Score: ' + str(player.killcount), False, white)
     ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
     lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
     deadtext = deadfont.render('U diededed', False, red)
@@ -105,8 +105,8 @@ while True:
         player.reducer = 1
         player.ammotimer = 0
 
-    if player.score < 40:
-        spawninterval = int(-142 * math.sqrt(player.score) + 1800)
+    if player.killcount < 40:
+        spawninterval = int(-142 * math.sqrt(player.killcount) + 1800)
     else:
         spawninterval = 900
 
@@ -132,7 +132,7 @@ while True:
                     ball = Ball(4,ball.xcord,ball.ycord)
                     ball = Ball(5,ball.xcord,ball.ycord)
                 else:
-                    player.score += 1
+                    player.killcount += 1
                 
     for ball in balls: #ball floor bouncing
         hits = pygame.sprite.spritecollide(floor, balls, False)
@@ -176,7 +176,7 @@ while True:
         upgrade.powerdown(player,ball,balls)
 
     #spawning                
-    if ((player.score > 2 and len(balls) < 2) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
+    if ((player.killcount > 2 and len(balls) < 2) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 
     if spawntimer % 900 == 0: 
@@ -209,7 +209,7 @@ while True:
         ylines = 50
         player.ammo = 666
         player.lives = 42
-        player.score = 40
+        player.killcount = 40
 
     #Display tekst    
 

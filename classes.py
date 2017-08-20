@@ -145,12 +145,13 @@ class Player(parent):
         self.ycord = 700 #y coördinate
         self.ammo = 10
         self.lives = 3
-        self.score = 0
+        self.killcount = 0
         self.timer = 0
         self.ammotimer = 0
         self.immune = False
         self.immunetimer = 0
         self.alive = True
+        self.once = 0 #this is there to make sure it only adds score once, remove this with menues and such
         self.image = pygame.Surface([50,50])
         self.image.fill(green)
         self.rect = self.image.get_rect()
@@ -182,6 +183,10 @@ class Player(parent):
             self.yspeed = 0
             self.image.fill(red)
             self.lives = 0
+            if self.once == 0:
+                with open('highscores.txt','a') as f:
+                    f.write("\nPLAYERNAME: " + str(self.killcount))
+            self.once += 1
         self.xcord += (self.xspeed * (self.reducer * self.reducerup)) #basic player movement
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
