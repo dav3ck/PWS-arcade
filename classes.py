@@ -189,8 +189,6 @@ class Player(parent):
 
         self.timer += 1
 
-        print(self.shooter)
-
         if self.shooter == True and self.timer % 5 == 0:
             bullet = Bullet(self.xcord, self.ycord)
             
@@ -303,9 +301,9 @@ class Upgrade(parent):
                 pygame.sprite.Sprite.kill(self)
 
     def vanish(self):
-        self.image = pygame.Surface([50,50])
+        self.image = pygame.Surface([0,0])
         self.image.fill(red)
-        self.xcord = 100
+        self.xcord = -49
         self.ycord = 200
 
     def update(self):
