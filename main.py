@@ -64,7 +64,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(100)
+                upgrade = Upgrade(101)
             elif event.key == pygame.K_q: #reset
                 for sprite in everything:
                     pygame.sprite.Sprite.kill(sprite)
@@ -116,15 +116,16 @@ while True:
     for bullet in bullets:
         hits = pygame.sprite.spritecollide(bullet, balls, True) #bullet on ball collisions
         for ball in hits:
-            pygame.sprite.Sprite.kill(bullet)
-            if ball.check == 1:
-                ball = Ball(2,ball.xcord,ball.ycord)
-                ball = Ball(3,ball.xcord,ball.ycord)
-            elif ball.check == 2 or ball.check == 3:
-                ball = Ball(4,ball.xcord,ball.ycord)
-                ball = Ball(5,ball.xcord,ball.ycord)
-            else:
-                player.score += 1
+            if ball.ycord > 50:
+                pygame.sprite.Sprite.kill(bullet)
+                if ball.check == 1:
+                    ball = Ball(2,ball.xcord,ball.ycord)
+                    ball = Ball(3,ball.xcord,ball.ycord)
+                elif ball.check == 2 or ball.check == 3:
+                    ball = Ball(4,ball.xcord,ball.ycord)
+                    ball = Ball(5,ball.xcord,ball.ycord)
+                else:
+                    player.score += 1
                 
     for ball in balls: #ball floor bouncing
         hits = pygame.sprite.spritecollide(floor, balls, False)
@@ -161,6 +162,7 @@ while True:
     for upgrade in upgrades: #runs the powerups
         hits = pygame.sprite.spritecollide(upgrade, players, False)
         for player in hits:
+            upgrade.yspeed = 0
             upgrade.powerup(player,ball,balls)
                                                 
     for upgrade in upgrades: #ends the powerups

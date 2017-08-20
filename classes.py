@@ -63,6 +63,7 @@ class Ball(parent):
         self.typenum = 0 #the type of the ball
         self.ittnum = 0 #what itteration ball animation is on
         self.launch = 10
+        self.stop = False #Gebruikt bij stop upgrade
         if check == 1: #biggest ball
             self.xspeed = -2
             self.dia = 100
@@ -145,6 +146,7 @@ class Player(parent):
         self.ammo = 10
         self.lives = 3
         self.score = 0
+        self.timer = 0
         self.ammotimer = 0
         self.immune = False
         self.immunetimer = 0
@@ -152,6 +154,7 @@ class Player(parent):
         self.image = pygame.Surface([50,50])
         self.image.fill(green)
         self.rect = self.image.get_rect()
+        self.shooter = False # auto shooter
         players.add(self)
 
     def changespeed(self,x):
@@ -183,6 +186,15 @@ class Player(parent):
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
         self.rect.y = self.ycord
+
+        self.timer += 1
+
+        print(self.shooter)
+
+        if self.shooter == True and self.timer % 5 == 0:
+            bullet = Bullet(self.xcord, self.ycord)
+            
+            
 
 
 class Bullet(parent):
@@ -260,12 +272,17 @@ class Upgrade(parent):
         #sterke powerups
         elif self.check == 100: #slimes slow
             for ball in balls:
-                if ball.ycord < 700:
-                    ball.xspeed /= 1000
-                    ball.yspeed /= 1000
-                    ball.weight /= 1000
+                if ball.ycord < 650:
+                    ball.stop = True
+                    ball.xspeed /= 10000
+                    ball.yspeed = 0
+                    ball.weight /= 10000
                     ball.launch = 0
                     self.timer = 0
+            self.vanish()
+        elif self.check == 101:
+            player.shooter = True
+            self.timer = 0
             self.vanish()
 
     def powerdown(self,player,ball,balls):
@@ -273,15 +290,22 @@ class Upgrade(parent):
             if self.timer > 600 and self.check ==1:
                 player.reducerup = 1
                 pygame.sprite.Sprite.kill(self)
-            if self.timer > 1800 and self.check == 2: #1800
-                ball.xspeed *= 1000
-                ball.yspeed *= 1000
-                ball.weight *= 1000
-                ball.launch = 10
+            elif self.timer > 600 and self.check == 100: #1800
+                for ball in balls:
+                    if ball.stop == True:
+                        ball.xspeed *= 10000
+                        ball.weight *= 10000
+                        ball.launch = 10
+                        ball.stop = False
+                        pygame.sprite.Sprite.kill(self)
+            elif self.timer > 300 and self.check == 101:
+                player.shooter = False
+                pygame.sprite.Sprite.kill(self)
 
     def vanish(self):
-        self.image = pygame.Surface([0,0])
-        self.xcord = -49
+        self.image = pygame.Surface([50,50])
+        self.image.fill(red)
+        self.xcord = 100
         self.ycord = 200
 
     def update(self):
@@ -293,3 +317,4 @@ class Upgrade(parent):
         self.rect.x = self.xcord
         if self.xcord < -100 or self.xcord > 1100 or self.despawn > 300:
             pygame.sprite.Sprite.kill(self)
+
