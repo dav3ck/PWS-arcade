@@ -20,6 +20,8 @@ deadfont = pygame.font.SysFont('Comic Sans MS', 100)
 
 spawntimer = 0
 
+spawninterval = 0
+
 #editor mode variables
 editor = False
 xlines = 50
@@ -64,7 +66,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(101)
+                upgrade = Upgrade(100)
             elif event.key == pygame.K_q: #reset
                 for sprite in everything:
                     pygame.sprite.Sprite.kill(sprite)
@@ -99,9 +101,14 @@ while True:
             player.ammo = 10
             player.reducer = 1
             player.ammotimer = 0
-    if player.ammo > 0 and player.ammotimer > 0:
+    if player.ammo > 0 and player.ammotimer > 0: #alowss abortion of reloading
         player.reducer = 1
         player.ammotimer = 0
+
+    if player.score < 40:
+        spawninterval = int(-142 * math.sqrt(player.score) + 1800)
+    else:
+        spawninterval = 900
 
     #colisions
     for ball in balls:
@@ -169,16 +176,17 @@ while True:
         upgrade.powerdown(player,ball,balls)
 
     #spawning                
-    if ((player.score > 2 and len(balls) < 2) or (spawntimer % int(-142 * math.sqrt(player.score) + 1800) == 0) and editor == False): #auto spawns balls
+    if ((player.score > 2 and len(balls) < 2) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 
     if spawntimer % 900 == 0: 
         if spawntimer % 2700 == 0:
-            upgrade = Upgrade(random.randrange(100,101))
+            upgrade = Upgrade(random.randrange(100,102))
         else:
             upgrade = Upgrade(random.randrange(3))
 
     everything.update()
+    
     #Screen management
 
     if player.xcord > (withd - 50):
@@ -201,6 +209,7 @@ while True:
         ylines = 50
         player.ammo = 666
         player.lives = 42
+        player.score = 40
 
     #Display tekst    
 

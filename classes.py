@@ -257,7 +257,7 @@ class Upgrade(parent):
         self.active = True
         #zwakke powerups
         if self.check == 0: #extera ammo
-            player.ammo = 20
+            player.ammo += 20
             pygame.sprite.Sprite.kill(self)
         elif self.check == 1: #speed up
             player.reducerup = 1.5
