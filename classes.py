@@ -278,11 +278,15 @@ class Upgrade(parent):
                     ball.launch = 0
                     self.timer = 0
             self.vanish()
-        elif self.check == 101:
+        elif self.check == 101: #auto fire
             player.shooter = True
             self.timer = 0
             self.vanish()
+        elif self.check == 102: #super extera life
+            player.lives += 3
+            pygame.sprite.prite.kill(self)
 
+            
     def powerdown(self,player,ball,balls):
         if self.active == True:
             if self.timer > 600 and self.check ==1:
