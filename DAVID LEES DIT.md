@@ -4,7 +4,7 @@ voordat je gaat werken zorg dat je alle bestanden uit de master in een folder he
 zorg dat alle files hun naam behouden (behalve main)
 
 # TODO:
-leaderboard,
+...leaderboard,
 opening screen,
 ...death,
 ...life powerup (s(?)),
@@ -13,11 +13,12 @@ opening screen,
 multiplier,
 ...first ball spawn,
 ...score based ball spawn,
-selection menu,
 ...restart after death,
 multiple ball spawn points
 ...artificial ball spawn intervall limit.
 ...fix freeze powerup not ending
+add leaderboard naming
 
 optional:
 storymode
+selection menu,
