@@ -17,7 +17,7 @@ multiplier,
 multiple ball spawn points
 ...artificial ball spawn intervall limit.
 ...fix freeze powerup not ending
-add powerup naming
+...add score naming
 
 optional:
 storymode
