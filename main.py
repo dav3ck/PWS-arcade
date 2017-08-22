@@ -48,16 +48,57 @@ while True:
 
         elif event.type == pygame.KEYDOWN: #handles all keypresses
             if event.key == pygame.K_LEFT: #move left
-                player.changespeed(-5)
+                if player.alive == True:
+                    player.changespeed(-5)
+                else:
+                    keyboard.num -= 1
             elif event.key == pygame.K_RIGHT: #move right
-                player.changespeed(5)
+                if player.alive == True:
+                    player.changespeed(5)
+                else:
+                    keyboard.num += 1
+            elif event.key == pygame.K_UP:
+                if player.alive == True:
+                    print("there seems to be nothing here...")
+                else:
+                    keyboard.num -= 10
+            elif event.key == pygame.K_DOWN:
+                if player.alive == True:
+                    print("there seems to be nothing here...")
+                else:
+                    keyboard.num += 10
             elif event.key == pygame.K_b: #spawn a ball 
                 ball = Ball(1,500,70)
+            elif event.key == pygame.K_k: #kills self
+                player.alive = False
             elif event.key == pygame.K_SPACE: #shoot button
                 if player.alive == True:
                     if player.ammo > 0:
                         bullet = Bullet(player.xcord,player.ycord)
                         player.ammo -= 1
+                else:
+                    if (keyboard.capital == False and keyboard.num < 38): 
+                        keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num] #adds letter to list with name 
+                    elif keyboard.capital == True and keyboard.num < 38:
+                        keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num + 37] #adds Capital letter to name list
+                        capital = False #Zet capital terug naar false > je print no longer Capitals
+                    elif keyboard.num == 38:
+                        if keyboard.capital == False: #Zet capital naar true, tenzij het al true is, dan zet het het terug naar False
+                            keyboard.capital = True
+                        else:
+                            keyboard.capital = False
+                    elif keyboard.num == 39: #Haalt een letter weg
+                        keyboard.name = keyboard.name[:-1]
+                    elif keyboard.num == 40: #Print je naam/ Dit is de plek waar je de name uitput
+                        print(keyboard.name)
+                        with open('highscores.txt','a') as f:
+                            f.write("\n" + keyboard.name + ": " + str(player.killcount))
+                            for sprite in everything:
+                                pygame.sprite.Sprite.kill(sprite)
+                            player = Player()
+                            floor = Floor()
+                            wall = Wall(0)
+                            wall = Wall(995)
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
@@ -76,19 +117,26 @@ while True:
                 wall = Wall(995)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
-                player.changespeed(5)
+                if player.alive == True:
+                    player.changespeed(5)
             elif event.key == pygame.K_RIGHT: #right key release
-                player.changespeed(-5)
+                if player.alive == True:
+                    player.changespeed(-5)
 
     #GUI text
     scoretext = myfont.render('Score: ' + str(player.killcount), False, white)
     ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
     lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
     deadtext = deadfont.render('U diededed', False, red)
+    if player.alive == False and player.once > 1:
+        nametext = myfont.render(keyboard.name,False, green)
     
 
     #Game logica
-
+    if player.alive == False and player.once == 1:
+        keyboard = Keyboard()
+        
+    
     spawntimer += 1
     
     if spawntimer == 3:
@@ -104,11 +152,6 @@ while True:
     if player.ammo > 0 and player.ammotimer > 0: #alowss abortion of reloading
         player.reducer = 1
         player.ammotimer = 0
-
-    if player.killcount < 40:
-        spawninterval = int(-142 * math.sqrt(player.killcount) + 1800)
-    else:
-        spawninterval = 900
 
     #colisions
     for ball in balls:
@@ -176,6 +219,11 @@ while True:
         upgrade.powerdown(player,ball,balls)
 
     #spawning                
+    if player.killcount < 40:
+        spawninterval = int(-142 * math.sqrt(player.killcount) + 1800)
+    else:
+        spawninterval = 900
+
     if ((player.killcount > 2 and len(balls) < 2) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 
@@ -216,8 +264,9 @@ while True:
     screen.blit(scoretext,(12,0))
     screen.blit(ammotext, (400, 0))
     screen.blit(lifetext, (700, 0))
-    if player.alive == False:
-        screen.blit(deadtext, (200, 300))
+    if player.alive == False and player.once > 2:
+        screen.blit(deadtext, (200, 70))
+        screen.blit(nametext, (300, 500))
         spawntimer = 0
 
     #Flip

@@ -189,10 +189,10 @@ class Player(parent):
             self.yspeed = 0
             self.image.fill(red)
             self.lives = 0
-            if self.once == 0:
+            '''if self.once == 0:
                 with open('highscores.txt','a') as f:
-                    f.write("\nPLAYERNAME: " + str(self.killcount))
-            self.once += 1
+                    f.write("\nPLAYERNAME: " + str(self.killcount))'''
+            self.once += 1 
         self.xcord += (self.xspeed * (self.reducer * self.reducerup)) #basic player movement
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
@@ -344,11 +344,13 @@ class Keyboard(parent): #Keyboard class
         self.alphabet = (" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y" , "z", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
 
     def update(self):
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
         if self.num > 40: #Zorgt ervoor dat het tussen de 1 tm 40 blijft
             self.num = self.num - 40 
         elif self.num < 1:
             self.num = 40 + self.num
         if self.capital == False: 
-            keyboard.image = pygame.image.load(keyboardanimation[self.num])
+            self.image = pygame.image.load(keyboardanimation[self.num])
         elif self.capital == True:
-            keyboard.image = pygame.image.load(keyboardanimation[self.num + 37])
+            self.image = pygame.image.load(keyboardanimation[self.num + 37])
