@@ -40,6 +40,12 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
     ballanimation.append(j1)
     j1 = []
 
+keyboardanimation = [] #Array met alle Keyboard sprites erin
+
+for i in range(81): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
+    legacy0 = "Sprites/Keyboard/Itteration" + str(i) + ".png"
+    keyboardanimation.append(legacy0)
+
 #class defenitions
 class parent(pygame.sprite.Sprite):
     def __init__(self):
@@ -325,3 +331,24 @@ class Upgrade(parent):
         if self.xcord < -100 or self.xcord > 1100 or self.despawn > 300:
             pygame.sprite.Sprite.kill(self)
 
+class Keyboard(parent): #Keyboard class
+    def __init__(self):
+        super().__init__()
+        self.xcord = 200
+        self.ycord = 200
+        self.num = 1
+        self.image = pygame.image.load(keyboardanimation[1])
+        self.rect = self.image.get_rect()
+        self.capital = False
+        self.name = ""
+        self.alphabet = (" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y" , "z", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+
+    def update(self):
+        if self.num > 40: #Zorgt ervoor dat het tussen de 1 tm 40 blijft
+            self.num = self.num - 40 
+        elif self.num < 1:
+            self.num = 40 + self.num
+        if self.capital == False: 
+            keyboard.image = pygame.image.load(keyboardanimation[self.num])
+        elif self.capital == True:
+            keyboard.image = pygame.image.load(keyboardanimation[self.num + 37])
