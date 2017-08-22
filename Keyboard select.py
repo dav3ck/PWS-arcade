@@ -10,6 +10,7 @@ screen = pygame.display.set_mode((withd,height))
 screen_rect=screen.get_rect()
 pygame.display.set_caption("Keyboard")
 clock = pygame.time.Clock()
+
 capital = False
 name = ""
 
