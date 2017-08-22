@@ -91,11 +91,11 @@ while True:
         keyboard.image = pygame.image.load(keyboardanimation[num + 27])
     keyboard.rect = keyboard.image.get_rect()
         
-
-
+    #print de text bottom right
     numtext = myfont.render(str(num), False, white)
     nametext = myfont.render(name, False, white)
 
+    #screen management
     screen.fill(black)
 
     screen.blit(numtext, (400,700))
@@ -106,8 +106,7 @@ while True:
     pygame.display.flip()
 
     clock.tick(30)
-    
-        
+
     
         
                 
