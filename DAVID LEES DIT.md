@@ -18,6 +18,7 @@ multiple ball spawn points
 ...artificial ball spawn intervall limit.
 ...fix freeze powerup not ending
 ...add score naming
+leaderboard sorting
 
 optional:
 storymode
