@@ -92,7 +92,7 @@ while True:
                     elif keyboard.num == 40: #Print je naam/ Dit is de plek waar je de name uitput
                         print(keyboard.name)
                         with open('highscores.txt','a') as f:
-                            f.write("\n" + keyboard.name + ": " + str(player.killcount))
+                            f.write("\n" + str(player.killcount) + " by: " + keyboard.name)
                             for sprite in everything:
                                 pygame.sprite.Sprite.kill(sprite)
                             player = Player()
