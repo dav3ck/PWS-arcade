@@ -89,8 +89,7 @@ while True:
                             keyboard.capital = False
                     elif keyboard.num == 39: #Haalt een letter weg
                         keyboard.name = keyboard.name[:-1]
-                    elif keyboard.num == 40: #Print je naam/ Dit is de plek waar je de name uitput
-                        print(keyboard.name)
+                    elif keyboard.num == 40:
                         with open('highscores.txt','a') as f:
                             f.write("\n" + str(player.killcount) + " by: " + keyboard.name)
                             for sprite in everything:
