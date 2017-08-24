@@ -17,6 +17,12 @@ walls = pygame.sprite.Group() #lits that will hold all the floors and walls etc
 players = pygame.sprite.Group()
 upgrades = pygame.sprite.Group()
 
+#highscores
+highscores = []
+with open('highscores.txt', 'r') as r:
+    for line in sorted(r):
+        highscores.insert(0, line)
+
 #sprite lists
 ballanimation = [] #[size[type[variation[itteration]]]]
 l1 = []
@@ -354,3 +360,13 @@ class Keyboard(parent): #Keyboard class
             self.image = pygame.image.load(keyboardanimation[self.num])
         elif self.capital == True:
             self.image = pygame.image.load(keyboardanimation[self.num + 37])
+
+'''class Highscore():
+    def __init__(self, number):
+        self.xcord = 200
+        self.ycord = 200
+        highscores[number]
+        self.yspeed = 5
+
+    def update(self):'''
+        

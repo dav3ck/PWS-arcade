@@ -47,9 +47,10 @@ while True:
     for event in pygame.event.get(): #handles closing the window
         if event.type == pygame.QUIT:
             pygame.quit()
-
         elif event.type == pygame.KEYDOWN: #handles all keypresses
-            gamestart = True
+            if gamestart == False:
+                gamestart = True
+                ball = Ball(1,500,70)
             if event.key == pygame.K_LEFT: #move left
                 if player.alive == True:
                     player.changespeed(-5)
@@ -95,13 +96,13 @@ while True:
                     elif keyboard.num == 40:
                         with open('highscores.txt','a') as f:
                             f.write("\n" + str(player.killcount) + " by: " + keyboard.name)
-                            for sprite in everything:
-                                pygame.sprite.Sprite.kill(sprite)
-                            gamestart = False
-                            player = Player()
-                            floor = Floor()
-                            wall = Wall(0)
-                            wall = Wall(995)
+                        for sprite in everything:
+                            pygame.sprite.Sprite.kill(sprite)
+                        gamestart = False
+                        player = Player()
+                        floor = Floor()
+                        wall = Wall(0)
+                        wall = Wall(995)
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
@@ -143,8 +144,6 @@ while True:
     
     spawntimer += 1
     
-    if spawntimer == 3:
-        ball = Ball(1,500,70)
 
     if player.ammo == 0: #reload mechanics
         player.reducer = 0.5
