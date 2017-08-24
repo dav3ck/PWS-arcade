@@ -22,6 +22,8 @@ spawntimer = 0
 
 spawninterval = 0
 
+gamestart = False
+
 #editor mode variables
 editor = False
 xlines = 50
@@ -47,6 +49,7 @@ while True:
             pygame.quit()
 
         elif event.type == pygame.KEYDOWN: #handles all keypresses
+            gamestart = True
             if event.key == pygame.K_LEFT: #move left
                 if player.alive == True:
                     player.changespeed(-5)
@@ -94,6 +97,7 @@ while True:
                             f.write("\n" + str(player.killcount) + " by: " + keyboard.name)
                             for sprite in everything:
                                 pygame.sprite.Sprite.kill(sprite)
+                            gamestart = False
                             player = Player()
                             floor = Floor()
                             wall = Wall(0)
@@ -127,6 +131,7 @@ while True:
     ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
     lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
     deadtext = deadfont.render('U diededed', False, red)
+    playtext = myfont.render('Press any button to play', False, white)
     if player.alive == False and player.once > 1:
         nametext = myfont.render(keyboard.name,False, green)
     
@@ -266,6 +271,9 @@ while True:
     if player.alive == False and player.once > 2:
         screen.blit(deadtext, (200, 70))
         screen.blit(nametext, (300, 500))
+        spawntimer = 0
+    if gamestart == False:
+        screen.blit(playtext, (200,70))
         spawntimer = 0
 
     #Flip
