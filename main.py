@@ -83,18 +83,30 @@ while True:
                         player.ammo -= 1
                         player.fire = True
                 else:
-                    if (keyboard.capital == False and keyboard.num < 38): 
-                        keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num] #adds letter to list with name 
-                    elif keyboard.capital == True and keyboard.num < 38:
-                        keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num + 37] #adds Capital letter to name list
-                        capital = False #Zet capital terug naar false > je print no longer Capitals
-                    elif keyboard.num == 38:
+                    if textbox.ittnum < 5:
+                        if (keyboard.capital == False and keyboard.num < 38): 
+                            keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num] #adds letter to list with name
+                            letter = Letter(textbox.ittnum,keyboard.num,False)
+                            textbox.ittnum += 1
+                        elif keyboard.capital == True and keyboard.num < 38:
+                            keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num + 37] #adds Capital letter to name list
+                            keyboard.capital = False  #Zet capital terug naar false > je print no longer Capitals
+                            letter = Letter(textbox.ittnum,keyboard.num,True)
+                            textbox.ittnum += 1
+                    if keyboard.num == 38:
                         if keyboard.capital == False: #Zet capital naar true, tenzij het al true is, dan zet het het terug naar False
                             keyboard.capital = True
                         else:
                             keyboard.capital = False
                     elif keyboard.num == 39: #Haalt een letter weg
                         keyboard.name = keyboard.name[:-1]
+                        textbox.ittnum -= 1
+                        print(textbox.ittnum)
+                        for letter in letters:
+                            if textbox.ittnum == letter.ittnum:
+                                 pygame.sprite.Sprite.kill(letter)
+                            if textbox.ittnum < 0:
+                                textbox.ittnum = 0
                     elif keyboard.num == 40:
                         with open('highscores.txt','a') as f:
                             f.write("\n" + str(player.killcount) + " by: " + keyboard.name)
@@ -135,13 +147,14 @@ while True:
     lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
     deadtext = deadfont.render('U diededed', False, red)
     playtext = myfont.render('Press any button to play', False, white)
-    if player.alive == False and player.once > 1:
-        nametext = myfont.render(keyboard.name,False, green)
+    #if player.alive == False and player.once > 1:
+        #nametext = myfont.render(keyboard.name,False, green)
     
 
     #Game logica
     if player.alive == False and player.once == 1:
         keyboard = Keyboard()
+        textbox = Textbox()
         
     
     spawntimer += 1
@@ -249,8 +262,9 @@ while True:
         player.xcord = 0
         
     screen.fill(lightblue)
-    
     everything.draw(screen)
+
+
 
     #Editor mode
     if editor == True:
@@ -271,11 +285,11 @@ while True:
     screen.blit(ammotext, (400, 0))
     screen.blit(lifetext, (700, 0))
     if player.alive == False and player.once > 2:
-        screen.blit(deadtext, (200, 70))
-        screen.blit(nametext, (300, 500))
+        screen.blit(deadtext, (380, 70))
+        #screen.blit(nametext, (300, 500))
         spawntimer = 0
     if gamestart == False:
-        screen.blit(playtext, (200,70))
+        screen.blit(playtext, (490,400))
         spawntimer = 0
 
     #Flip

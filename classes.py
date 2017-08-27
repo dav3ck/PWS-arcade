@@ -18,6 +18,8 @@ walls = pygame.sprite.Group() #lits that will hold all the floors and walls etc
 players = pygame.sprite.Group()
 upgrades = pygame.sprite.Group()
 floors = pygame.sprite.Group()
+letters = pygame.sprite.Group()
+
 
 #highscores
 highscores = []
@@ -95,6 +97,21 @@ groundanimation = [] #Array met alle ground sprites
 for i in range(5): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
     legacy0 = "Sprites/Ground/itteration" + str(i) + ".png"
     groundanimation.append(legacy0)
+
+#Textbox animation
+
+textboxanimation = [] #Array met alle ground sprites
+
+for i in range(7): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
+    legacy0 = "Sprites/Textbox/itteration" + str(i) + ".png"
+    textboxanimation.append(legacy0)
+
+letteranimation = []
+
+for i in range (64):
+    legacy0 = "Sprites/letters/l0_letter" + str(i) + ".png"
+    letteranimation.append(legacy0)
+    
 
 #class defenitions
 class parent(pygame.sprite.Sprite):
@@ -472,6 +489,55 @@ class Keyboard(parent): #Keyboard class
             self.image = pygame.image.load(keyboardanimation[self.num])
         elif self.capital == True:
             self.image = pygame.image.load(keyboardanimation[self.num + 40])
+
+class Textbox(parent):
+    def __init__(self):
+        super().__init__()
+        self.xcord = 512
+        self.ycord = 300
+        self.ittnum = 0
+        self.image = pygame.image.load(textboxanimation[self.ittnum])
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        self.timer += 1
+        if self.timer % 30 == 0:
+            self.image = pygame.image.load(textboxanimation[self.ittnum])
+        elif self.timer % 15 == 0:
+            self.image = pygame.image.load(textboxanimation[5])
+        self.rect = self.image.get_rect()
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
+        
+
+class Letter(parent):
+    def __init__(self, ittnum, num, capital):
+        super().__init__()
+        self.ittnum = ittnum
+        self.xcord = 536 + self.ittnum * 44
+        self.ycord = 330
+        self.charnum = self.ittnum
+        self.capital = capital
+        self.num = num
+        if self.num == 37:
+            self.image = pygame.image.load(letteranimation[63])
+        elif self.capital == True and self.num > 11:
+            self.image = pygame.image.load(letteranimation[self.num + 26])
+        else:
+            self.image = pygame.image.load(letteranimation[self.num])
+        letters.add(self)
+
+    def update(self):
+        
+        self.rect = self.image.get_rect()
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
+
+        
+        
+
+    
+        
 
 '''class Highscore():
     def __init__(self, number):
