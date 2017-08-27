@@ -10,9 +10,10 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 blue = (0,0,255)
+lightblue = (82, 219, 255)
 
-withd = 1000 #Brete van scherm
-height = 800 #Hoogte van scherm
+withd = 1280 #Brete van scherm
+height = 1024 #Hoogte van scherm
 
 pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
@@ -30,9 +31,9 @@ xlines = 50
 ylines = 50
 
 #window setup
-screen = pygame.display.set_mode((1000,800))
+screen = pygame.display.set_mode((1280,1024))
 screen_rect=screen.get_rect()
-pygame.display.set_caption('early pre-alfa')
+pygame.display.set_caption('early alfa')
 clock = pygame.time.Clock()
 
 player = Player() #creates the player
@@ -40,7 +41,7 @@ player = Player() #creates the player
 #creates play envoirment 
 floor = Floor()
 wall = Wall(0) #left wall
-wall = Wall(995) #right wall
+wall = Wall(1275) #right wall
 
 #main game loop
 while True:
@@ -72,7 +73,7 @@ while True:
                 else:
                     keyboard.num += 10
             elif event.key == pygame.K_b: #spawn a ball 
-                ball = Ball(1,500,70)
+                ball = Ball(1,640,70)
             elif event.key == pygame.K_k: #kills self
                 player.alive = False
             elif event.key == pygame.K_SPACE: #shoot button
@@ -80,6 +81,7 @@ while True:
                     if player.ammo > 0:
                         bullet = Bullet(player.xcord,player.ycord)
                         player.ammo -= 1
+                        player.fire = True
                 else:
                     if (keyboard.capital == False and keyboard.num < 38): 
                         keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num] #adds letter to list with name 
@@ -102,7 +104,7 @@ while True:
                         player = Player()
                         floor = Floor()
                         wall = Wall(0)
-                        wall = Wall(995)
+                        wall = Wall(1275)
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
@@ -118,7 +120,7 @@ while True:
                 player = Player()
                 floor = Floor()
                 wall = Wall(0)
-                wall = Wall(995)
+                wall = Wall(1275)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 if player.alive == True:
@@ -210,6 +212,7 @@ while True:
         for bullet in hits:
             upgrade.yspeed = 5
             upgrade.xspeed = 0
+            upgrade.type = 1
             pygame.sprite.Sprite.kill(bullet)
 
     for upgrade in upgrades: #runs the powerups
@@ -245,7 +248,7 @@ while True:
     elif player.xcord < 0:
         player.xcord = 0
         
-    screen.fill(black)
+    screen.fill(lightblue)
     
     everything.draw(screen)
 

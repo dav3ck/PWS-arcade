@@ -7,6 +7,7 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 blue = (0,0,255)
+lightblue = (82, 219, 255)
 
 #lists
 bullets = pygame.sprite.Group() #list that will hold all the bullets
@@ -16,6 +17,7 @@ everything = pygame.sprite.Group() #list that will hold everything
 walls = pygame.sprite.Group() #lits that will hold all the floors and walls etc
 players = pygame.sprite.Group()
 upgrades = pygame.sprite.Group()
+floors = pygame.sprite.Group()
 
 #highscores
 highscores = []
@@ -46,11 +48,53 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
     ballanimation.append(j1)
     j1 = []
 
+#Player animation
+
+playeranimation = []
+
+for i in range(3):
+    legacy0 = "Sprites/Player/type" + str(i)
+    for k in range (2):
+        legacy1 = legacy0 + "/var" + str(k)
+        for j in range (6):
+            legacy2 = legacy1 + "/itteration" + str(j) + ".png"
+            j1.append(legacy2)
+        k1.append(j1)
+        j1 = []
+    playeranimation.append(k1)
+    k1 = []
+
+#upgrade animation
+
+upgradeanimation = []
+
+for i in range(3):
+    legacy0 = "Sprites/Upgrade/type" + str(i)
+    for k in range (2):
+        legacy1 = legacy0 + "/var" + str(k)
+        for j in range (8):
+            legacy2 = legacy1 + "/itteration" + str(j) + ".png"
+            j1.append(legacy2)
+        k1.append(j1)
+        j1 = []
+    upgradeanimation.append(k1)
+    k1 = []
+
+#keyboard animation
+
 keyboardanimation = [] #Array met alle Keyboard sprites erin
 
 for i in range(81): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
     legacy0 = "Sprites/Keyboard/Itteration" + str(i) + ".png"
     keyboardanimation.append(legacy0)
+
+#floor animation
+
+groundanimation = [] #Array met alle ground sprites
+
+for i in range(5): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
+    legacy0 = "Sprites/Ground/itteration" + str(i) + ".png"
+    groundanimation.append(legacy0)
 
 #class defenitions
 class parent(pygame.sprite.Sprite):
@@ -78,30 +122,30 @@ class Ball(parent):
         self.stop = False #Gebruikt bij stop upgrade
         if check == 1: #biggest ball
             self.xspeed = -2
-            self.dia = 100
+            self.dia = 160
             self.weight = 0.1
             self.image = pygame.image.load("Sprites/balls/size0/type0/variation0/itteration0.png")
         elif check == 2: #medium ball right
             self.xspeed = 4
-            self.dia = 50
+            self.dia = 80
             self.weight = 0.2
             self.sizenum = 1
             self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png")
         elif check == 3: #medium ball left
             self.xspeed = -4
-            self.dia = 50
+            self.dia = 80
             self.weight = 0.2
             self.sizenum = 1
             self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png")
         elif check == 4: #small ball right
             self.xspeed = 7
-            self.dia = 25
+            self.dia = 40
             self.weight = 0.3
             self.sizenum = 2
             self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png")
         elif check == 5: #small ball left
             self.xspeed = -7
-            self.dia = 25
+            self.dia = 40
             self.weight = 0.3
             self.sizenum = 2
             self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png")
@@ -141,7 +185,7 @@ class Wall(parent):
     def __init__(self, x):
         super().__init__()
         self.xcord = x
-        self.image = pygame.Surface([5,800])
+        self.image = pygame.Surface([5,1024])
         self.image.fill(white)
         self.rect = self.image.get_rect()
         self.rect.y = self.ycord
@@ -153,8 +197,8 @@ class Player(parent):
         super().__init__()
         self.reducer = 1
         self.reducerup = 1
-        self.xcord = 475 #x coördinate
-        self.ycord = 700 #y coördinate
+        self.xcord = 640 #x coördinate
+        self.ycord = 752 #y coördinate
         self.ammo = 10
         self.lives = 3
         self.killcount = 0
@@ -164,14 +208,19 @@ class Player(parent):
         self.immunetimer = 0
         self.alive = True
         self.once = 0 #this is there to make sure it only adds score once, remove this with menues and such
-        self.image = pygame.Surface([50,50])
-        self.image.fill(green)
+        self.image = pygame.image.load(playeranimation[0][0][0])
         self.rect = self.image.get_rect()
         self.shooter = False # auto shooter
+        self.fire = False #kijkt of player schiet
+        self.firetimer = 0
+        self.ittnum = 0
+        self.ittnumtimer = 0
+        self.immune1 = 0 #1 of 0 waarde als iets immune is
         players.add(self)
 
     def changespeed(self,x):
         self.xspeed += x
+            
 
     def reload(self):
         self.ammo = 0
@@ -180,16 +229,16 @@ class Player(parent):
     def update(self):
         if self.immune == True:
             self.immunetimer += 1
-            if self.immunetimer % 20 == 0:
-                self.image.fill(red)
-            elif self.immunetimer % 20 == 10:
-                self.image.fill(white)
+            self.immune1 = 1
             if self.immunetimer > 120:
                 self.immune = False
                 self.image.fill(green)
                 self.immunetimer = 0
             if self.lives <= 0:
                 self.alive = False
+        else:
+            self.immune1 = 0
+                
         if self.alive == False:
             self.xspeed = 0
             self.yspeed = 0
@@ -199,15 +248,48 @@ class Player(parent):
                 with open('highscores.txt','a') as f:
                     f.write("\nPLAYERNAME: " + str(self.killcount))'''
             self.once += 1 
+ 
+
+        if self.shooter == True and self.timer % 5 == 0:
+            bullet = Bullet(self.xcord, self.ycord)
+
+        if self.fire == True and self.xspeed == 0:
+            self.firetimer += 1
+            self.image = pygame.image.load(playeranimation[0][self.immune1][1])
+            if self.firetimer > 16:
+                self.firetimer = 0
+                self.fire = False
+        elif self.xspeed > 0:
+            self.fire = False
+            self.image = pygame.image.load(playeranimation[1][self.immune1][self.ittnum])
+            if self.ittnumtimer % 5 == 0:
+                self.ittnum += 1
+        elif self.xspeed < 0:
+            self.fire = False
+            self.image = pygame.image.load(playeranimation[2][self.immune1][self.ittnum])
+            if self.ittnumtimer % 5 == 0:
+                self.ittnum += 1
+        else:
+            self.image = pygame.image.load(playeranimation[0][self.immune1][0])
+            self.ittnum = 0
+            self.ittnumtimer = 0
+
+        if self.ittnum > 5:
+            self.ittnum = 0
+            
+            
+
+        self.rect = self.image.get_rect()
+        
         self.xcord += (self.xspeed * (self.reducer * self.reducerup)) #basic player movement
         self.ycord += self.yspeed        
         self.rect.x = self.xcord
         self.rect.y = self.ycord
 
         self.timer += 1
-
-        if self.shooter == True and self.timer % 5 == 0:
-            bullet = Bullet(self.xcord, self.ycord)
+        self.ittnumtimer += 1
+            
+            
             
             
 
@@ -215,7 +297,7 @@ class Player(parent):
 class Bullet(parent):
     def __init__(self, x,y):
         super().__init__()
-        self.xcord = x + 25
+        self.xcord = x + 40
         self.ycord = y
         self.yspeed = 10
         self.image = pygame.Surface([3,10])
@@ -233,34 +315,39 @@ class Bullet(parent):
 class Floor(parent):
     def __init__(self):
         super().__init__()
-        self.ycord = 750
-        self.image = pygame.Surface([1000,50])
-        self.image.fill(white)
+        self.ycord = 824
+        self.image = pygame.image.load("Sprites/Ground/itteration0.png")
         self.rect = self.image.get_rect()
+        self.timer = 0
+        self.ittnum = 0
+        floors.add(self)
+
+    def update(self):
+        self.timer += 1
+        if self.timer % 30 == 0:
+            self.ittnum += 1
+
+        self.image = pygame.image.load(groundanimation[self.ittnum])
+        self.rect = self.image.get_rect()
+
         self.rect.y = self.ycord
         self.rect.x = self.xcord
 
-
-    
-
-
-
+        if self.ittnum == 4:
+            self.ittnum = 0
         
-
+        
 #Powerups 
 
 class Upgrade(parent):
     def __init__(self,check):
         super().__init__()
-        self.image = pygame.Surface([50,50])
-        self.image.fill(blue)
-        self.rect = self.image.get_rect()
         self.ycord = random.randrange(20,400)
         self.despawn = 0 # These two are for
         self.detimer = 0 # despawning on the floor
         self.active = False
         if random.randrange(2) == 1:
-            self.xcord = 1000
+            self.xcord = 1280
             self.xspeed = -1
         else:
             self.xcord = -50
@@ -268,6 +355,14 @@ class Upgrade(parent):
         self.timer = 0
         self.check = check
         upgrades.add(self)
+        
+        self.type = 0 #welke animatie
+        self.ittnum = 0
+        self.var = 0
+
+        self.image = pygame.image.load(upgradeanimation[0][self.var][self.ittnum])
+        self.rect = self.image.get_rect()
+
 
     def powerup(self,player,ball,balls):
         self.detimer = 0
@@ -329,25 +424,42 @@ class Upgrade(parent):
 
     def update(self):
         self.timer += 1
+
+
+        if self.type == 0 and self.timer % 6 == 0:
+            self.image = pygame.image.load(upgradeanimation[self.type][self.var][self.ittnum])
+            self.ittnum += 1
+            if self.ittnum == 8:
+                self.ittnum = 0
+        elif self.type == 1:
+            self.image = pygame.image.load(upgradeanimation[self.type][self.var][0])
+        elif self.type == 2:
+            self.image = pygame.Surface([40,40])
+            self.image.fill(blue)
+
+        self.rect = self.image.get_rect()
+
         self.despawn += self.detimer
         self.xcord += self.xspeed
         self.ycord += self.yspeed
         self.rect.y = self.ycord
         self.rect.x = self.xcord
-        if self.xcord < -100 or self.xcord > 1100 or self.despawn > 300:
+        if self.xcord < -100 or self.xcord > 1340 or self.despawn > 300:
             pygame.sprite.Sprite.kill(self)
+        
+        
 
 class Keyboard(parent): #Keyboard class
     def __init__(self):
         super().__init__()
-        self.xcord = 200
-        self.ycord = 200
-        self.num = 1
+        self.xcord = 414
+        self.ycord = 400
+        self.num = 0
         self.image = pygame.image.load(keyboardanimation[1])
         self.rect = self.image.get_rect()
         self.capital = False
         self.name = ""
-        self.alphabet = (" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y" , "z", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+        self.alphabet = (" ","1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y" , "z", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ")
 
     def update(self):
         self.rect.y = self.ycord
@@ -359,7 +471,7 @@ class Keyboard(parent): #Keyboard class
         if self.capital == False: 
             self.image = pygame.image.load(keyboardanimation[self.num])
         elif self.capital == True:
-            self.image = pygame.image.load(keyboardanimation[self.num + 37])
+            self.image = pygame.image.load(keyboardanimation[self.num + 40])
 
 '''class Highscore():
     def __init__(self, number):
