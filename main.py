@@ -25,6 +25,9 @@ spawninterval = 0
 
 gamestart = False
 
+highscoredisp = False #change this to something life related
+
+
 #editor mode variables
 editor = False
 xlines = 50
@@ -133,6 +136,9 @@ while True:
                 floor = Floor()
                 wall = Wall(0)
                 wall = Wall(1275)
+            elif event.key == pygame.K_h: #spawns highsscore list will still crash the game, working on it
+                highscore = Highscore()
+                highscoredisp = True
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 if player.alive == True:
@@ -291,6 +297,10 @@ while True:
     if gamestart == False:
         screen.blit(playtext, (490,400))
         spawntimer = 0
+    if highscoredisp == True:
+        for score in highscores:
+            screen.blit(myfont.render(str(score)), (highscore.xcord, highscore.tempy))
+            highscore.tempy += 40
 
     #Flip
     

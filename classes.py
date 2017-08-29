@@ -27,6 +27,9 @@ with open('highscores.txt', 'r') as r:
     for line in sorted(r):
         highscores.insert(0, line)
 
+pygame.font.init()
+highscoresfont = pygame.font.SysFont('Comic Sans MS', 30)
+
 #sprite lists
 ballanimation = [] #[size[type[variation[itteration]]]]
 l1 = []
@@ -536,12 +539,22 @@ class Letter(parent):
     
         
 
-'''class Highscore():
-    def __init__(self, number):
+class Highscore(parent):
+    def __init__(self):
+        super().__init__()
         self.xcord = 200
         self.ycord = 200
-        highscores[number]
-        self.yspeed = 5
+        self.tempy = 200 #temporary y cord for progressing
+        self.yspeed = -2
+        self.image = pygame.Surface([0,0])
+        self.rect = self.image.get_rect()
+        
 
-    def update(self):'''
+    def update(self):
+        '''for score in highscores:
+            screen.blit(highscoresfont.render(score), (self.xcord, self.tempy))
+            self.tempy += 40'''
+        self.ycord += self.yspeed
+        self.tempy = self.ycord
+        
         
