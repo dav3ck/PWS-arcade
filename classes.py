@@ -261,9 +261,6 @@ class Player(parent):
             self.yspeed = 0
             self.image.fill(red)
             self.lives = 0
-            '''if self.once == 0:
-                with open('highscores.txt','a') as f:
-                    f.write("\nPLAYERNAME: " + str(self.killcount))'''
             self.once += 1 
  
 
@@ -437,7 +434,7 @@ class Upgrade(parent):
         self.image = pygame.Surface([0,0])
         self.image.fill(red)
         self.xcord = -49
-        self.ycord = 200
+        self.ycord = -49
 
     def update(self):
         self.timer += 1

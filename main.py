@@ -78,7 +78,7 @@ while True:
                 player.alive = False
             elif event.key == pygame.K_SPACE: #shoot button
                 if player.alive == True:
-                    if player.ammo > 0:
+                    if player.ammo > 0 and spawntimer > 0:
                         bullet = Bullet(player.xcord,player.ycord)
                         player.ammo -= 1
                         player.fire = True
