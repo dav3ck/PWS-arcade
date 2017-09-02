@@ -27,6 +27,8 @@ gamestart = False
 
 highscoredisp = False #change this to something life related
 
+highscore = Highscore()
+
 
 #editor mode variables
 editor = False
@@ -292,16 +294,18 @@ while True:
     screen.blit(lifetext, (700, 0))
     if player.alive == False and player.once > 2:
         screen.blit(deadtext, (380, 70))
-        #screen.blit(nametext, (300, 500))
         spawntimer = 0
     if gamestart == False:
         screen.blit(playtext, (490,400))
         spawntimer = 0
+        for score in highscores:
+            screen.blit(myfont.render(score, False, white), (highscore.xcord, highscore.tempy))
+            highscore.tempy += 40
     if highscoredisp == True:
         for score in highscores:
-            screen.blit(myfont.render(str(score)), (highscore.xcord, highscore.tempy))
+            screen.blit(myfont.render(score, False, white), (highscore.xcord, highscore.tempy))
             highscore.tempy += 40
-
+            
     #Flip
     
     pygame.display.flip()

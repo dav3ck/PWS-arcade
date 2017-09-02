@@ -551,10 +551,12 @@ class Highscore(parent):
         
 
     def update(self):
-        '''for score in highscores:
-            screen.blit(highscoresfont.render(score), (self.xcord, self.tempy))
-            self.tempy += 40'''
         self.ycord += self.yspeed
         self.tempy = self.ycord
+        if self.ycord < -1000:
+            pygame.sprite.Sprite.kill(self)
+            print("yep its doin stuff")
+            highscore = Highscore()
+        
         
         
