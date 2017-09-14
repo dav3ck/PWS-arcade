@@ -14,12 +14,13 @@ multiplier,
 ...first ball spawn,
 ...score based ball spawn,
 ...restart after death,
-multiple ball spawn points
 ...artificial ball spawn intervall limit.
 ...fix freeze powerup not ending
 ...add score naming
-leaderboard sorting
+...leaderboard sorting
+your score after death
 
 optional:
 storymode
 selection menue,
+multiple ball spawn points,
