@@ -114,7 +114,7 @@ while True:
                                 textbox.ittnum = 0
                     elif keyboard.num == 40:
                         with open('highscores.txt','a') as f:
-                            f.write("\n" + str(player.killcount) + " by: " + keyboard.name)
+                            f.write(str(player.killcount) + " - " + keyboard.name + "\n")
                         for sprite in everything:
                             pygame.sprite.Sprite.kill(sprite)
                         gamestart = False
@@ -138,9 +138,6 @@ while True:
                 floor = Floor()
                 wall = Wall(0)
                 wall = Wall(1275)
-            elif event.key == pygame.K_h: #spawns highsscore list will still crash the game, working on it
-                highscore = Highscore()
-                highscoredisp = True
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 if player.alive == True:
@@ -298,12 +295,8 @@ while True:
     if gamestart == False:
         screen.blit(playtext, (490,400))
         spawntimer = 0
-        for score in highscores:
-            screen.blit(myfont.render(score, False, white), (highscore.xcord, highscore.tempy))
-            highscore.tempy += 40
-    if highscoredisp == True:
-        for score in highscores:
-            screen.blit(myfont.render(score, False, white), (highscore.xcord, highscore.tempy))
+        for i in range(10):
+            screen.blit(myfont.render(str(i + 1) + ". " + str(highscores[i]).replace("\n",""), False, white), (highscore.xcord, highscore.tempy))
             highscore.tempy += 40
             
     #Flip

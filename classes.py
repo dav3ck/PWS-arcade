@@ -545,13 +545,11 @@ class Highscore(parent):
         self.xcord = 200
         self.ycord = 200
         self.tempy = 200 #temporary y cord for progressing
-        self.yspeed = -2
         self.image = pygame.Surface([0,0])
         self.rect = self.image.get_rect()
         
 
     def update(self):
-        self.ycord += self.yspeed
         self.tempy = self.ycord
         if self.ycord < -1000:
             pygame.sprite.Sprite.kill(self)
