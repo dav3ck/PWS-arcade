@@ -19,6 +19,7 @@ multiplier,
 ...add score naming
 ...leaderboard sorting
 your score after death
+music
 
 optional:
 storymode
