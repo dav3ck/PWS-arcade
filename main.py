@@ -148,9 +148,9 @@ while True:
                 floor = Floor()
                 wall = Wall(0)
                 wall = Wall(1275)
-           elif event.key == pygame.K_m:
+            elif event.key == pygame.K_m:
                 screen = pygame.display.set_mode((1280,1024), pygame.FULLSCREEN)
-           elif event.key == pygame.K_n:
+            elif event.key == pygame.K_n:
                 screen = pygame.display.set_mode((1280,1024))
                 pygame.mouse.set_visible(1)
         elif event.type == pygame.KEYUP: #handles all key releases
