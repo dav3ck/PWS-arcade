@@ -39,12 +39,14 @@ ylines = 50
 
 #background = Background()
 
-screen = pygame.display.set_mode((1280,1024))
+screen = pygame.display.set_mode((1280,1024), pygame.FULLSCREEN)
 screen_rect=screen.get_rect()
-pygame.display.set_caption('early alfa')
+pygame.display.set_caption('alfa')
 clock = pygame.time.Clock()
 
-background = pygame.image.load('Sprites/Extra/Background.png').convert_alpha()
+background = pygame.image.load('Sprites/Extra/Background.png').convert()
+
+pygame.mouse.set_visible(0) #Removed mouse
 
 
 
@@ -146,6 +148,11 @@ while True:
                 floor = Floor()
                 wall = Wall(0)
                 wall = Wall(1275)
+           elif event.key == pygame.K_m:
+                screen = pygame.display.set_mode((1280,1024), pygame.FULLSCREEN)
+           elif event.key == pygame.K_n:
+                screen = pygame.display.set_mode((1280,1024))
+                pygame.mouse.set_visible(1)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 if player.alive == True:
