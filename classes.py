@@ -333,7 +333,7 @@ class Floor(parent):
     def __init__(self):
         super().__init__()
         self.ycord = 824
-        self.image = pygame.image.load("Sprites/Ground/itteration0.png")
+        self.image = pygame.image.load("Sprites/Ground/itteration0.png").convert_aplha()
         self.rect = self.image.get_rect()
         self.timer = 0
         self.ittnum = 0
@@ -341,10 +341,10 @@ class Floor(parent):
 
     def update(self):
         self.timer += 1
-        if self.timer % 30 == 0:
-            self.ittnum += 1
+        #if self.timer % 30 == 0:
+        #    self.ittnum += 1
 
-        self.image = pygame.image.load(groundanimation[self.ittnum])
+        #self.image = pygame.image.load(groundanimation[self.ittnum])
         self.rect = self.image.get_rect()
 
         self.rect.y = self.ycord
