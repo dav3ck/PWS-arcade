@@ -146,25 +146,25 @@ class Ball(parent):
             self.weight = 0.1
             self.image = pygame.image.load("Sprites/balls/size0/type0/variation0/itteration0.png")
         elif check == 2: #medium ball right
-            self.xspeed = 4
+            self.xspeed = 3
             self.dia = 80
             self.weight = 0.2
             self.sizenum = 1
             self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png")
         elif check == 3: #medium ball left
-            self.xspeed = -4
+            self.xspeed = -3
             self.dia = 80
             self.weight = 0.2
             self.sizenum = 1
             self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png")
         elif check == 4: #small ball right
-            self.xspeed = 7
+            self.xspeed = 5
             self.dia = 40
             self.weight = 0.3
             self.sizenum = 2
             self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png")
         elif check == 5: #small ball left
-            self.xspeed = -7
+            self.xspeed = -5
             self.dia = 40
             self.weight = 0.3
             self.sizenum = 2
@@ -333,7 +333,7 @@ class Floor(parent):
     def __init__(self):
         super().__init__()
         self.ycord = 824
-        self.image = pygame.image.load("Sprites/Ground/itteration0.png").convert_aplha()
+        self.image = pygame.image.load("Sprites/Ground/itteration0.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.timer = 0
         self.ittnum = 0
@@ -352,6 +352,13 @@ class Floor(parent):
 
         if self.ittnum == 4:
             self.ittnum = 0
+
+'''class Background(parent):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("Sprites/Extra/Background.png")
+        self.rect = self.image.get_rect()'''
+        
         
         
 #Powerups 
@@ -397,7 +404,7 @@ class Upgrade(parent):
             pygame.sprite.Sprite.kill(self)
         
         #sterke powerups
-        elif self.check == 100: #slimes slow
+        elif self.check == 3: #slimes slow
             for ball in balls:
                 if ball.ycord < 650:
                     ball.stop = True
@@ -407,11 +414,11 @@ class Upgrade(parent):
                     ball.launch = 0
                     self.timer = 0
             self.vanish()
-        elif self.check == 101: #auto fire
+        elif self.check == 4: #auto fire
             player.shooter = True
             self.timer = 0
             self.vanish()
-        elif self.check == 102: #super extera life
+        elif self.check == 5: #super extera life
             player.lives += 3
             pygame.sprite.prite.kill(self)
 
@@ -421,7 +428,7 @@ class Upgrade(parent):
             if self.timer > 600 and self.check ==1:
                 player.reducerup = 1
                 pygame.sprite.Sprite.kill(self)
-            elif self.timer > 600 and self.check == 100: #1800
+            elif self.timer > 600 and self.check == 3: #1800
                 for ball in balls:
                     if ball.stop == True:
                         ball.xspeed *= 10000
@@ -429,15 +436,15 @@ class Upgrade(parent):
                         ball.launch = 10
                         ball.stop = False
                         pygame.sprite.Sprite.kill(self)
-            elif self.timer > 300 and self.check == 101:
+            elif self.timer > 300 and self.check == 4:
                 player.shooter = False
                 pygame.sprite.Sprite.kill(self)
 
     def vanish(self):
         self.image = pygame.Surface([0,0])
         self.image.fill(red)
-        self.xcord = -49
-        self.ycord = -49
+        self.xcord = -100
+        self.ycord = -100
 
     def update(self):
         self.timer += 1
@@ -451,8 +458,7 @@ class Upgrade(parent):
         elif self.type == 1:
             self.image = pygame.image.load(upgradeanimation[self.type][self.var][0])
         elif self.type == 2:
-            self.image = pygame.Surface([40,40])
-            self.image.fill(blue)
+            self.image = pygame.image.load(upgradeanimation[self.type][0][self.check])
 
         self.rect = self.image.get_rect()
 

@@ -36,10 +36,17 @@ xlines = 50
 ylines = 50
 
 #window setup
+
+#background = Background()
+
 screen = pygame.display.set_mode((1280,1024))
 screen_rect=screen.get_rect()
 pygame.display.set_caption('early alfa')
 clock = pygame.time.Clock()
+
+background = pygame.image.load('Sprites/Extra/Background.png').convert_alpha()
+
+
 
 player = Player() #creates the player
 
@@ -47,6 +54,7 @@ player = Player() #creates the player
 floor = Floor()
 wall = Wall(0) #left wall
 wall = Wall(1275) #right wall
+
 
 #main game loop
 while True:
@@ -130,7 +138,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(100)
+                upgrade = Upgrade(3)
             elif event.key == pygame.K_q: #reset
                 for sprite in everything:
                     pygame.sprite.Sprite.kill(sprite)
@@ -222,8 +230,11 @@ while True:
     for upgrade in upgrades: #stops the upgrades on the floor
         hits = pygame.sprite.spritecollide(floor, upgrades, False)
         for upgrade in hits:
-            upgrade.yspeed = 0
-            upgrade.detimer = 1
+            if upgrade.type == 1:
+                upgrade.yspeed = 0
+                upgrade.detimer = 1
+                upgrade.ycord += 92
+                upgrade.type = 2
 
     for upgrade in upgrades: #shoot the upgrades down
         hits = pygame.sprite.spritecollide(upgrade, bullets, False)
@@ -248,12 +259,12 @@ while True:
     else:
         spawninterval = 900
 
-    if ((player.killcount > 2 and len(balls) < 2) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
+    if ((player.killcount > 2 and len(balls) < 1) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
 
     if spawntimer % 900 == 0: 
         if spawntimer % 2700 == 0:
-            upgrade = Upgrade(random.randrange(100,102))
+            upgrade = Upgrade(random.randrange(3,6))
         else:
             upgrade = Upgrade(random.randrange(3))
 
@@ -267,6 +278,7 @@ while True:
         player.xcord = 0
         
     screen.fill(lightblue)
+    screen.blit(background,(0,0))
     everything.draw(screen)
 
 
