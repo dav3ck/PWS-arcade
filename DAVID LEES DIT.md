@@ -26,7 +26,7 @@ move score text and such downscreen,
 sound effects,
 
 Bugs to fix
-moving after dieing.
+...moving after dieing.
 Free bullet spam hit
 scoreboard after game restart
 
