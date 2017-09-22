@@ -428,7 +428,7 @@ class Upgrade(parent):
             self.vanish()
         elif self.check == 5: #super extera life
             player.lives += 3
-            pygame.sprite.sprite.kill(self)
+            pygame.sprite.Sprite.kill(self)
 
             
     def powerdown(self,player,ball,balls):
