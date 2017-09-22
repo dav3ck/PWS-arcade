@@ -16,7 +16,7 @@ withd = 1280 #Brete van scherm
 height = 1024 #Hoogte van scherm
 
 pygame.font.init()
-myfont = pygame.font.Font('Sprites/Font/Arcade.ttf', 30)
+myfont = pygame.font.Font('Sprites/Font/Arcade.ttf', 60)
 deadfont = pygame.font.SysFont('Comic Sans MS', 100)
 
 spawntimer = 0
@@ -127,7 +127,7 @@ while True:
                         zeros = 6 - len(scoredisp)
                         scoresub = '0' * zeros + scoredisp
                         with open('highscores.txt','a') as f:
-                            f.write(scoresub + " - " + keyboard.name + "\n")
+                            f.write(scoredisp + " - " + keyboard.name + "\n")
                         for sprite in everything:
                             pygame.sprite.Sprite.kill(sprite)
                         highscores = []
@@ -170,10 +170,12 @@ while True:
                     player.changespeed(-5)
 
     #GUI text
-    scoredisp = str(int(player.killcount * 100))
-    scoretext = myfont.render('Score: ' + scoredisp, False, white)
-    ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
-    lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
+    prescore = str(int(player.killcount * 100))
+    zeros = 6 - len(prescore)
+    scoredisp = '0' * zeros + prescore
+    scoretext = myfont.render(scoredisp, False, black)
+    ammotext = myfont.render(str(player.ammo), False, black)
+    lifetext = myfont.render(str(player.lives), False, black)
     deadtext = deadfont.render('U diededed', False, red)
     playtext = myfont.render('Press shoot to play', False, white)
     #if player.alive == False and player.once > 1:
@@ -324,14 +326,14 @@ while True:
 
     #Display tekst    
 
-    screen.blit(scoretext,(12,0))
-    screen.blit(ammotext, (400, 0))
-    screen.blit(lifetext, (700, 0))
+    screen.blit(scoretext,(880,950))
+    screen.blit(ammotext, (380, 950))
+    screen.blit(lifetext, (205, 950))
     if player.alive == False and player.once > 2:
         globaltimer = 0
         spawntimer = 0
     if gamestart == False:
-        screen.blit(playtext, (490,400))
+        screen.blit(playtext, (490,100))
         globaltimer = 0
         spawntimer = 0
         for i in range(10):
