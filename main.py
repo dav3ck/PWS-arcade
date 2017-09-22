@@ -16,10 +16,12 @@ withd = 1280 #Brete van scherm
 height = 1024 #Hoogte van scherm
 
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
+myfont = pygame.font.Font('Sprites/Font/Arcade.ttf', 30)
 deadfont = pygame.font.SysFont('Comic Sans MS', 100)
 
 spawntimer = 0
+
+globaltimer = 0
 
 spawninterval = 0
 
@@ -39,7 +41,7 @@ ylines = 50
 
 #background = Background()
 
-screen = pygame.display.set_mode((1280,1024), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280,1024))#, pygame.FULLSCREEN)
 screen_rect=screen.get_rect()
 pygame.display.set_caption('alfa')
 clock = pygame.time.Clock()
@@ -47,7 +49,6 @@ clock = pygame.time.Clock()
 background = pygame.image.load('Sprites/Extra/Background.png').convert()
 
 pygame.mouse.set_visible(0) #Removed mouse
-
 
 
 player = Player() #creates the player
@@ -64,9 +65,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
         elif event.type == pygame.KEYDOWN: #handles all keypresses
-            if gamestart == False:
-                gamestart = True
-                ball = Ball(1,500,70)
             if event.key == pygame.K_LEFT: #move left
                 if player.alive == True:
                     player.changespeed(-5)
@@ -92,6 +90,9 @@ while True:
             elif event.key == pygame.K_k: #kills self
                 player.alive = False
             elif event.key == pygame.K_SPACE: #shoot button
+                if gamestart == False:
+                    gamestart = True
+                    ball = Ball(1,500,70)
                 if player.alive == True:
                     if player.ammo > 0 and spawntimer > 0:
                         bullet = Bullet(player.xcord,player.ycord)
@@ -122,16 +123,23 @@ while True:
                                  pygame.sprite.Sprite.kill(letter)
                             if textbox.ittnum < 0:
                                 textbox.ittnum = 0
-                    elif keyboard.num == 40:
+                    elif keyboard.num == 40: #submits score and resets game
+                        zeros = 6 - len(scoredisp)
+                        scoresub = '0' * zeros + scoredisp
                         with open('highscores.txt','a') as f:
-                            f.write(str(player.killcount) + " - " + keyboard.name + "\n")
+                            f.write(scoresub + " - " + keyboard.name + "\n")
                         for sprite in everything:
                             pygame.sprite.Sprite.kill(sprite)
+                        highscores = []
+                        with open('highscores.txt', 'r') as r:
+                            for line in sorted(r):
+                                highscores.insert(0, line)
                         gamestart = False
                         player = Player()
                         floor = Floor()
                         wall = Wall(0)
                         wall = Wall(1275)
+                        highscore = Highscore()
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
@@ -162,11 +170,12 @@ while True:
                     player.changespeed(-5)
 
     #GUI text
-    scoretext = myfont.render('Score: ' + str(player.killcount), False, white)
+    scoredisp = str(int(player.killcount * 100))
+    scoretext = myfont.render('Score: ' + scoredisp, False, white)
     ammotext = myfont.render('Bullets: ' + str(player.ammo), False, white)
     lifetext = myfont.render('Lives: ' + str(player.lives), False, white)
     deadtext = deadfont.render('U diededed', False, red)
-    playtext = myfont.render('Press any button to play', False, white)
+    playtext = myfont.render('Press shoot to play', False, white)
     #if player.alive == False and player.once > 1:
         #nametext = myfont.render(keyboard.name,False, green)
     
@@ -182,7 +191,8 @@ while True:
         
     
     spawntimer += 1
-    
+
+    globaltimer += 1
 
     if player.ammo == 0: #reload mechanics
         player.reducer = 0.5
@@ -213,11 +223,13 @@ while True:
                 if ball.check == 1:
                     ball = Ball(2,ball.xcord,ball.ycord)
                     ball = Ball(3,ball.xcord,ball.ycord)
+                    player.killcount += 1
                 elif ball.check == 2 or ball.check == 3:
                     ball = Ball(4,ball.xcord,ball.ycord)
                     ball = Ball(5,ball.xcord,ball.ycord)
-                else:
                     player.killcount += 1
+                else:
+                    player.killcount += 3
                 
     for ball in balls: #ball floor bouncing
         hits = pygame.sprite.spritecollide(floor, balls, False)
@@ -236,7 +248,8 @@ while True:
                 ball.xcord -= 10
             elif ball.xspeed < 0 and ball.typenum == 1:
                 ball.xcord += 10
-            ball.xspeed *= -1
+            if player.alive == True:
+                ball.xspeed *= -1
 
     for upgrade in upgrades: #stops the upgrades on the floor
         hits = pygame.sprite.spritecollide(floor, upgrades, False)
@@ -260,21 +273,23 @@ while True:
         for player in hits:
             upgrade.yspeed = 0
             upgrade.powerup(player,ball,balls)
+            player.killcount += 0.5
                                                 
     for upgrade in upgrades: #ends the powerups
         upgrade.powerdown(player,ball,balls)
 
     #spawning                
-    if player.killcount < 40:
-        spawninterval = int(-142 * math.sqrt(player.killcount) + 1800)
+    if globaltimer < 3600:
+        spawninterval = int(-1 / 14400 * math.sqrt(globaltimer) + 1800)
     else:
         spawninterval = 900
 
-    if ((player.killcount > 2 and len(balls) < 1) or spawntimer % spawninterval == 0 and editor == False): #auto spawns balls
+    if ((player.killcount > 12 and len(balls) < 2) or spawntimer == spawninterval and editor == False): #auto spawns balls
         ball = Ball(1,500,70)
+        spawntimer = 0
 
-    if spawntimer % 900 == 0: 
-        if spawntimer % 2700 == 0:
+    if globaltimer % 900 == 0: 
+        if globaltimer % 2700 == 0:
             upgrade = Upgrade(random.randrange(3,6))
         else:
             upgrade = Upgrade(random.randrange(3))
@@ -313,9 +328,11 @@ while True:
     screen.blit(ammotext, (400, 0))
     screen.blit(lifetext, (700, 0))
     if player.alive == False and player.once > 2:
+        globaltimer = 0
         spawntimer = 0
     if gamestart == False:
         screen.blit(playtext, (490,400))
+        globaltimer = 0
         spawntimer = 0
         for i in range(10):
             screen.blit(myfont.render(str(i + 1) + ". " + str(highscores[i]).replace("\n",""), False, white), (highscore.xcord, highscore.tempy))
