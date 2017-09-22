@@ -21,7 +21,7 @@ opening screen,
 your score after death,
 music,
 ...slimes bouncing off screen. 
-arcade font,
+...arcade font,
 move score text and such downscreen,
 sound effects,
 
