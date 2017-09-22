@@ -18,8 +18,16 @@ multiplier,
 ...fix freeze powerup not ending
 ...add score naming
 ...leaderboard sorting
-your score after death
-music
+your score after death,
+music,
+slimes bouncing off screen. 
+arcade font,
+move score text and such downscreen
+
+Bugs to fix
+moving after dieing.
+Free bullet spam hit
+scoreboard after game restart
 
 optional:
 storymode
