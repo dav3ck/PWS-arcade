@@ -29,7 +29,8 @@ Bugs to fix
 ...moving after dieing.
 ...Free bullet spam hit (should be fixed)
 ...scoreboard after game restart
-score with propper amount of zero's infront
+...score with propper amount of zero's infront
+score not updating after round
 
 optional:
 storymode
