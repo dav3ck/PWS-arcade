@@ -20,7 +20,7 @@ opening screen,
 ...leaderboard sorting
 your score after death,
 music,
-slimes bouncing off screen. 
+...slimes bouncing off screen. 
 arcade font,
 move score text and such downscreen,
 sound effects,
