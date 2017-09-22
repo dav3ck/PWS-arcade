@@ -28,7 +28,8 @@ sound effects,
 Bugs to fix
 ...moving after dieing.
 ...Free bullet spam hit (should be fixed)
-scoreboard after game restart
+...scoreboard after game restart
+score with propper amount of zero's infront
 
 optional:
 storymode
