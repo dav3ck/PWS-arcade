@@ -27,7 +27,7 @@ sound effects,
 
 Bugs to fix
 ...moving after dieing.
-Free bullet spam hit
+...Free bullet spam hit (should be fixed)
 scoreboard after game restart
 
 optional:
