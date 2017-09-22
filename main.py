@@ -70,22 +70,22 @@ while True:
             if event.key == pygame.K_LEFT: #move left
                 if player.alive == True:
                     player.changespeed(-5)
-                else:
+                elif len(keyboards) == 1:
                     keyboard.num -= 1
             elif event.key == pygame.K_RIGHT: #move right
                 if player.alive == True:
                     player.changespeed(5)
-                else:
+                elif len(keyboards) == 1:
                     keyboard.num += 1
             elif event.key == pygame.K_UP:
                 if player.alive == True:
                     print("there seems to be nothing here...")
-                else:
+                elif len(keyboards) == 1:
                     keyboard.num -= 10
             elif event.key == pygame.K_DOWN:
                 if player.alive == True:
                     print("there seems to be nothing here...")
-                else:
+                elif len(keyboards) == 1:
                     keyboard.num += 10
             elif event.key == pygame.K_b: #spawn a ball 
                 ball = Ball(1,640,70)
@@ -97,7 +97,7 @@ while True:
                         bullet = Bullet(player.xcord,player.ycord)
                         player.ammo -= 1
                         player.fire = True
-                else:
+                elif len(keyboards) == 1:
                     if textbox.ittnum < 5:
                         if (keyboard.capital == False and keyboard.num < 38): 
                             keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num] #adds letter to list with name
@@ -113,7 +113,7 @@ while True:
                             keyboard.capital = True
                         else:
                             keyboard.capital = False
-                    elif keyboard.num == 39: #Haalt een letter weg
+                    elif keyboard.num == 39 and textbox.ittnum != 0: #Haalt een letter weg
                         keyboard.name = keyboard.name[:-1]
                         textbox.ittnum -= 1
                         print(textbox.ittnum)
@@ -140,7 +140,7 @@ while True:
             elif event.key == pygame.K_r: #reload
                 player.reload()
             elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(3)
+                upgrade = Upgrade(5)
             elif event.key == pygame.K_q: #reset
                 for sprite in everything:
                     pygame.sprite.Sprite.kill(sprite)
@@ -173,6 +173,10 @@ while True:
 
     #Game logica
     if player.alive == False and player.once == 1:
+        flashart = Flashart("Sprites/Extra/GameOver.png", 414 , 50)
+        player.deathtimer = 1
+
+    if player.alive == False and player.deathtimer > 180 and len(keyboards) == 0: #Dit load na 3 seconde textbox in
         keyboard = Keyboard()
         textbox = Textbox()
         
@@ -309,7 +313,6 @@ while True:
     screen.blit(ammotext, (400, 0))
     screen.blit(lifetext, (700, 0))
     if player.alive == False and player.once > 2:
-        screen.blit(deadtext, (380, 70))
         spawntimer = 0
     if gamestart == False:
         screen.blit(playtext, (490,400))

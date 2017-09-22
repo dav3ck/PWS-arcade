@@ -19,6 +19,7 @@ players = pygame.sprite.Group()
 upgrades = pygame.sprite.Group()
 floors = pygame.sprite.Group()
 letters = pygame.sprite.Group()
+keyboards = pygame.sprite.Group()
 
 
 #highscores
@@ -237,6 +238,7 @@ class Player(parent):
         self.ittnumtimer = 0
         self.immune1 = 0 #1 of 0 waarde als iets immune is
         players.add(self)
+        self.deathtimer = 0
 
     def changespeed(self,x):
         self.xspeed += x
@@ -270,7 +272,10 @@ class Player(parent):
         if self.shooter == True and self.timer % 5 == 0:
             bullet = Bullet(self.xcord, self.ycord)
 
-        if self.fire == True and self.xspeed == 0:
+            
+        if self.alive == False:
+            self.image = pygame.image.load("Sprites/Extra/Death.png")
+        elif self.fire == True and self.xspeed == 0:
             self.firetimer += 1
             self.image = pygame.image.load(playeranimation[0][self.immune1][1])
             if self.firetimer > 16:
@@ -305,6 +310,9 @@ class Player(parent):
 
         self.timer += 1
         self.ittnumtimer += 1
+        if self.deathtimer > 0:
+            self.deathtimer += 1
+        
             
             
             
@@ -317,10 +325,10 @@ class Bullet(parent):
         self.xcord = x + 40
         self.ycord = y
         self.yspeed = 10
-        self.image = pygame.Surface([3,10])
-        self.image.fill(white)
+        self.image = pygame.image.load("Sprites/Extra/Bullet.png").convert()
         self.rect = self.image.get_rect()
         bullets.add(self)
+        
 
     def update(self):
         self.ycord -= self.yspeed #moving the ball up
@@ -420,7 +428,7 @@ class Upgrade(parent):
             self.vanish()
         elif self.check == 5: #super extera life
             player.lives += 3
-            pygame.sprite.prite.kill(self)
+            pygame.sprite.sprite.kill(self)
 
             
     def powerdown(self,player,ball,balls):
@@ -483,7 +491,8 @@ class Keyboard(parent): #Keyboard class
         self.capital = False
         self.name = ""
         self.alphabet = (" ","1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y" , "z", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ")
-
+        keyboards.add(self)
+        
     def update(self):
         self.rect.y = self.ycord
         self.rect.x = self.xcord
@@ -535,6 +544,17 @@ class Letter(parent):
 
     def update(self):
         
+        self.rect = self.image.get_rect()
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
+
+
+class Flashart(parent):
+    def __init__(self, image, x, y):
+        super().__init__()
+        self.xcord = x
+        self.ycord = y
+        self.image = pygame.image.load(image).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.y = self.ycord
         self.rect.x = self.xcord
