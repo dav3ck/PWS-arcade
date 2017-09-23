@@ -17,6 +17,7 @@ height = 1024 #Hoogte van scherm
 
 pygame.font.init()
 myfont = pygame.font.Font('Sprites/Font/Arcade.ttf', 60)
+myfontsmall = pygame.font.Font("Sprites/Font/Arcade.ttf", 40)
 deadfont = pygame.font.SysFont('Comic Sans MS', 100)
 
 spawntimer = 0
@@ -57,6 +58,7 @@ player = Player() #creates the player
 floor = Floor()
 wall = Wall(0) #left wall
 wall = Wall(1275) #right wall
+flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
 
 
 #main game loop
@@ -66,12 +68,12 @@ while True:
             pygame.quit()
         elif event.type == pygame.KEYDOWN: #handles all keypresses
             if event.key == pygame.K_LEFT: #move left
-                if player.alive == True:
+                if player.alive == True and gamestart == True:
                     player.changespeed(-5)
                 elif len(keyboards) == 1:
                     keyboard.num -= 1
             elif event.key == pygame.K_RIGHT: #move right
-                if player.alive == True:
+                if player.alive == True and gamestart == True:
                     player.changespeed(5)
                 elif len(keyboards) == 1:
                     keyboard.num += 1
@@ -93,6 +95,8 @@ while True:
                 if gamestart == False:
                     gamestart = True
                     ball = Ball(1,500,70)
+                    for flashart in flasharts:
+                        pygame.sprite.Sprite.kill(flashart)
                 if player.alive == True:
                     if player.ammo > 0 and spawntimer > 0:
                         bullet = Bullet(player.xcord,player.ycord)
@@ -140,6 +144,7 @@ while True:
                         wall = Wall(0)
                         wall = Wall(1275)
                         highscore = Highscore()
+                        flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
             elif event.key == pygame.K_e: #Enables Editor mode
                 if editor == True:
                     editor = False
@@ -163,10 +168,10 @@ while True:
                 pygame.mouse.set_visible(1)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
-                if player.alive == True:
+                if player.alive == True and gamestart == True:
                     player.changespeed(5)
             elif event.key == pygame.K_RIGHT: #right key release
-                if player.alive == True:
+                if player.alive == True and gamestart == True:
                     player.changespeed(-5)
 
     #GUI text
@@ -177,7 +182,7 @@ while True:
     ammotext = myfont.render(str(player.ammo), False, black)
     lifetext = myfont.render(str(player.lives), False, black)
     deadtext = deadfont.render('U diededed', False, red)
-    playtext = myfont.render('Press shoot to play', False, white)
+    playtext = myfont.render('Press shoot to play', False, black)
     #if player.alive == False and player.once > 1:
         #nametext = myfont.render(keyboard.name,False, green)
     
@@ -333,11 +338,11 @@ while True:
         globaltimer = 0
         spawntimer = 0
     if gamestart == False:
-        screen.blit(playtext, (490,100))
+        screen.blit(playtext, (750,750))
         globaltimer = 0
         spawntimer = 0
         for i in range(10):
-            screen.blit(myfont.render(str(i + 1) + ". " + str(highscores[i]).replace("\n",""), False, white), (highscore.xcord, highscore.tempy))
+            screen.blit(myfontsmall.render(str(i + 1) + ". " + str(highscores[i]).replace("\n",""), False, black), (highscore.xcord, highscore.tempy))
             highscore.tempy += 40
             
     #Flip

@@ -20,6 +20,7 @@ upgrades = pygame.sprite.Group()
 floors = pygame.sprite.Group()
 letters = pygame.sprite.Group()
 keyboards = pygame.sprite.Group()
+flasharts = pygame.sprite.Group()
 
 
 #highscores
@@ -558,6 +559,7 @@ class Flashart(parent):
         self.rect = self.image.get_rect()
         self.rect.y = self.ycord
         self.rect.x = self.xcord
+        flasharts.add(self)
 
         
         
@@ -568,8 +570,8 @@ class Flashart(parent):
 class Highscore(parent):
     def __init__(self):
         super().__init__()
-        self.xcord = 200
-        self.ycord = 200
+        self.xcord = 110
+        self.ycord = 315
         self.tempy = 200 #temporary y cord for progressing
         self.image = pygame.Surface([0,0])
         self.rect = self.image.get_rect()
