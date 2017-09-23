@@ -182,7 +182,7 @@ while True:
     ammotext = myfont.render(str(player.ammo), False, black)
     lifetext = myfont.render(str(player.lives), False, black)
     deadtext = deadfont.render('U diededed', False, red)
-    playtext = myfont.render('Press shoot to play', False, black)
+
     #if player.alive == False and player.once > 1:
         #nametext = myfont.render(keyboard.name,False, green)
     
@@ -338,7 +338,6 @@ while True:
         globaltimer = 0
         spawntimer = 0
     if gamestart == False:
-        screen.blit(playtext, (750,750))
         globaltimer = 0
         spawntimer = 0
         for i in range(10):
