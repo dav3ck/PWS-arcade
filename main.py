@@ -5,12 +5,7 @@ import random
 pygame.init()
 from classes import * #imports all from classes, removes the need for "classes."prepend
 
-black = (0, 0, 0) #colour variables (MAY NEED TO BE REMOVED AFTER BITMAPS)
-white = (255, 255, 255)
-green = (0, 255, 0)
-red = (255, 0, 0)
-blue = (0,0,255)
-lightblue = (82, 219, 255)
+black = (0, 0, 0) #defines the colour black
 
 withd = 1280 #Brete van scherm
 height = 1024 #Hoogte van scherm
@@ -18,7 +13,6 @@ height = 1024 #Hoogte van scherm
 pygame.font.init()
 myfont = pygame.font.Font('Sprites/Font/Arcade.ttf', 60)
 myfontsmall = pygame.font.Font("Sprites/Font/Arcade.ttf", 40)
-deadfont = pygame.font.SysFont('Comic Sans MS', 100)
 
 spawntimer = 0
 
@@ -28,29 +22,17 @@ spawninterval = 0
 
 gamestart = False
 
-highscoredisp = False #change this to something life related
-
 highscore = Highscore()
 
-
-#editor mode variables
-editor = False
-xlines = 50
-ylines = 50
-
 #window setup
-
-#background = Background()
-
 screen = pygame.display.set_mode((1280,1024))#, pygame.FULLSCREEN)
 screen_rect=screen.get_rect()
-pygame.display.set_caption('alfa')
+pygame.display.set_caption('beta')
 clock = pygame.time.Clock()
 
 background = pygame.image.load('Sprites/Extra/Background.png').convert()
 
 pygame.mouse.set_visible(0) #Removed mouse
-
 
 player = Player() #creates the player
 
@@ -87,16 +69,11 @@ while True:
                     print("there seems to be nothing here...")
                 elif len(keyboards) == 1:
                     keyboard.num += 10
-            elif event.key == pygame.K_b: #spawn a ball 
-                ball = Ball(1,640,70)
-            elif event.key == pygame.K_k: #kills self
-                player.alive = False
             elif event.key == pygame.K_SPACE: #shoot button
                 if gamestart == False:
                     gamestart = True
                     ball = Ball(1,500,70)
-                    for flashart in flasharts:
-                        pygame.sprite.Sprite.kill(flashart)
+                    pygame.sprite.Sprite.kill(flashart)
                 if player.alive == True:
                     if player.ammo > 0 and spawntimer > 0:
                         bullet = Bullet(player.xcord,player.ycord)
@@ -128,10 +105,11 @@ while True:
                             if textbox.ittnum < 0:
                                 textbox.ittnum = 0
                     elif keyboard.num == 40: #submits score and resets game
-                        zeros = 6 - len(scoredisp)
-                        scoresub = '0' * zeros + scoredisp
-                        with open('highscores.txt','a') as f:
-                            f.write(scoredisp + " - " + keyboard.name + "\n")
+                        if len(keyboard.name) != 0:
+                            zeros = 6 - len(scoredisp)
+                            scoresub = '0' * zeros + scoredisp
+                            with open('highscores.txt','a') as f:
+                                f.write(scoredisp + " - " + keyboard.name + "\n")
                         for sprite in everything:
                             pygame.sprite.Sprite.kill(sprite)
                         highscores = []
@@ -145,22 +123,8 @@ while True:
                         wall = Wall(1275)
                         highscore = Highscore()
                         flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
-            elif event.key == pygame.K_e: #Enables Editor mode
-                if editor == True:
-                    editor = False
-                else:
-                    editor = True
             elif event.key == pygame.K_r: #reload
                 player.reload()
-            elif event.key == pygame.K_p: #spawn a upgrade
-                upgrade = Upgrade(5)
-            elif event.key == pygame.K_q: #reset
-                for sprite in everything:
-                    pygame.sprite.Sprite.kill(sprite)
-                player = Player()
-                floor = Floor()
-                wall = Wall(0)
-                wall = Wall(1275)
             elif event.key == pygame.K_m:
                 screen = pygame.display.set_mode((1280,1024), pygame.FULLSCREEN)
             elif event.key == pygame.K_n:
@@ -178,16 +142,16 @@ while True:
     prescore = str(int(player.killcount * 100))
     zeros = 6 - len(prescore)
     scoredisp = '0' * zeros + prescore
+    
     scoretext = myfont.render(scoredisp, False, black)
     ammotext = myfont.render(str(player.ammo), False, black)
-    lifetext = myfont.render(str(player.lives), False, black)
-    deadtext = deadfont.render('U diededed', False, red)
-
-    #if player.alive == False and player.once > 1:
-        #nametext = myfont.render(keyboard.name,False, green)
-    
+    lifetext = myfont.render(str(player.lives), False, black)    
 
     #Game logica
+    spawntimer += 1
+
+    globaltimer += 1
+
     if player.alive == False and player.once == 1:
         flashart = Flashart("Sprites/Extra/GameOver.png", 414 , 50)
         player.deathtimer = 1
@@ -196,11 +160,6 @@ while True:
         keyboard = Keyboard()
         textbox = Textbox()
         
-    
-    spawntimer += 1
-
-    globaltimer += 1
-
     if player.ammo == 0: #reload mechanics
         player.reducer = 0.5
         player.ammotimer += 1
@@ -291,7 +250,7 @@ while True:
     else:
         spawninterval = 900
 
-    if ((player.killcount > 12 and len(balls) < 2) or spawntimer == spawninterval and editor == False): #auto spawns balls
+    if ((player.killcount > 12 and len(balls) < 2) or spawntimer == spawninterval): #auto spawns balls
         ball = Ball(1,500,70)
         spawntimer = 0
 
@@ -310,30 +269,16 @@ while True:
     elif player.xcord < 0:
         player.xcord = 0
         
-    screen.fill(lightblue)
     screen.blit(background,(0,0))
+    
     everything.draw(screen)
-
-
-
-    #Editor mode
-    if editor == True:
-        while xlines < withd or ylines < height:
-            pygame.draw.line(screen, white, (xlines, 0), (ylines, height))
-            pygame.draw.line(screen, white, (0, ylines), (withd, ylines))
-            xlines += 50
-            ylines += 50
-        xlines = 50
-        ylines = 50
-        player.ammo = 666
-        player.lives = 42
-        player.killcount = 40
 
     #Display tekst    
 
     screen.blit(scoretext,(880,950))
     screen.blit(ammotext, (380, 950))
     screen.blit(lifetext, (205, 950))
+    
     if player.alive == False and player.once > 2:
         globaltimer = 0
         spawntimer = 0

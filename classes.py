@@ -4,10 +4,6 @@ import random
 #colour variables REMOVE WHEN BITMAPS ARE IMPLEMENTED
 black = (0, 0, 0) 
 white = (255, 255, 255)
-green = (0, 255, 0)
-red = (255, 0, 0)
-blue = (0,0,255)
-lightblue = (82, 219, 255)
 
 #lists
 bullets = pygame.sprite.Group() #list that will hold all the bullets
@@ -20,7 +16,6 @@ upgrades = pygame.sprite.Group()
 floors = pygame.sprite.Group()
 letters = pygame.sprite.Group()
 keyboards = pygame.sprite.Group()
-flasharts = pygame.sprite.Group()
 
 
 #highscores
@@ -29,8 +24,6 @@ with open('highscores.txt', 'r') as r:
     for line in sorted(r):
         highscores.insert(0, line)
 
-pygame.font.init()
-highscoresfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 #sprite lists
 ballanimation = [] #[size[type[variation[itteration]]]]
@@ -56,7 +49,6 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
     j1 = []
 
 #Player animation
-
 playeranimation = []
 
 for i in range(3):
@@ -111,6 +103,7 @@ for i in range(7): #Zelfde als voor slime animatie sprites alleen dit keer klein
     legacy0 = "Sprites/Textbox/itteration" + str(i) + ".png"
     textboxanimation.append(legacy0)
 
+#letter annimation
 letteranimation = []
 
 for i in range (64):
@@ -255,7 +248,6 @@ class Player(parent):
             self.immune1 = 1
             if self.immunetimer > 120:
                 self.immune = False
-                self.image.fill(green)
                 self.immunetimer = 0
             if self.lives <= 0:
                 self.alive = False
@@ -265,7 +257,6 @@ class Player(parent):
         if self.alive == False:
             self.xspeed = 0
             self.yspeed = 0
-            self.image.fill(red)
             self.lives = 0
             self.once += 1 
  
@@ -361,12 +352,6 @@ class Floor(parent):
 
         if self.ittnum == 4:
             self.ittnum = 0
-
-'''class Background(parent):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load("Sprites/Extra/Background.png")
-        self.rect = self.image.get_rect()'''
         
         
         
@@ -451,7 +436,6 @@ class Upgrade(parent):
 
     def vanish(self):
         self.image = pygame.Surface([0,0])
-        self.image.fill(red)
         self.xcord = -100
         self.ycord = -100
 
@@ -559,14 +543,10 @@ class Flashart(parent):
         self.rect = self.image.get_rect()
         self.rect.y = self.ycord
         self.rect.x = self.xcord
-        flasharts.add(self)
 
-        
         
 
     
-        
-
 class Highscore(parent):
     def __init__(self):
         super().__init__()
@@ -583,6 +563,4 @@ class Highscore(parent):
             pygame.sprite.Sprite.kill(self)
             print("yep its doin stuff")
             highscore = Highscore()
-        
-        
         
