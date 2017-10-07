@@ -340,10 +340,6 @@ class Floor(parent):
 
     def update(self):
         self.timer += 1
-        #if self.timer % 30 == 0:
-        #    self.ittnum += 1
-
-        #self.image = pygame.image.load(groundanimation[self.ittnum])
         self.rect = self.image.get_rect()
 
         self.rect.y = self.ycord
