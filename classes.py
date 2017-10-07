@@ -1,7 +1,7 @@
 import pygame
 import random
 
-#colour variables REMOVE WHEN BITMAPS ARE IMPLEMENTED
+#colour variables
 black = (0, 0, 0) 
 white = (255, 255, 255)
 
