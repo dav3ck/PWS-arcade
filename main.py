@@ -27,7 +27,7 @@ highscore = Highscore()
 #window setup
 screen = pygame.display.set_mode((1280,1024))#, pygame.FULLSCREEN)
 screen_rect=screen.get_rect()
-pygame.display.set_caption('beta')
+pygame.display.set_caption('Sticky Icky beta')
 clock = pygame.time.Clock()
 
 background = pygame.image.load('Sprites/Extra/Background.png').convert()
