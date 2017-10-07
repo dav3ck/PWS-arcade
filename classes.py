@@ -175,7 +175,7 @@ class Ball(parent):
         if self.timer > 30 and self.typenum == 0:
             self.ittnum += 1
             self.timer = 0
-            if self.ittnum > 4: #CHANGE THIS TO MATCH AMMOUNT OF FRAMES PER CYCLE -1
+            if self.ittnum > 4:
                 self.ittnum = -1
         if self.timer > 3 and self.typenum == 1:
             self.ittnum += 1
