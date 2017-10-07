@@ -39,7 +39,6 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
             legacy2 = legacy1 + "/variation" + str(k)
             for l in range (5): #what exact sprite it is (itteration)
                 legacy3 = legacy2 + "/itteration" + str(l) +".png"
-                #image = pygame.image.load(legacy3)
                 l1.append(legacy3)
             k1.append(l1)
             l1 = []
