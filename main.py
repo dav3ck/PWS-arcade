@@ -78,7 +78,6 @@ while True:
                     if player.ammo > 0 and spawntimer > 0:
                         bullet = Bullet(player.xcord,player.ycord)
                         player.ammo -= 1
-                        player.fire = True
                 elif len(keyboards) == 1:
                     if textbox.ittnum < 5:
                         if (keyboard.capital == False and keyboard.num < 38): 
