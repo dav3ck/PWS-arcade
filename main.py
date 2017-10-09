@@ -98,7 +98,6 @@ while True:
                     elif keyboard.num == 39 and textbox.ittnum != 0: #Haalt een letter weg
                         keyboard.name = keyboard.name[:-1]
                         textbox.ittnum -= 1
-                        print(textbox.ittnum)
                         for letter in letters:
                             if textbox.ittnum == letter.ittnum:
                                  pygame.sprite.Sprite.kill(letter)
