@@ -105,8 +105,6 @@ while True:
                                 textbox.ittnum = 0
                     elif keyboard.num == 40: #submits score and resets game
                         if len(keyboard.name) != 0:
-                            zeros = 6 - len(scoredisp)
-                            scoresub = '0' * zeros + scoredisp
                             with open('highscores.txt','a') as f:
                                 f.write(scoredisp + " - " + keyboard.name + "\n")
                         for sprite in everything:
