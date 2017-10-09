@@ -243,7 +243,7 @@ while True:
 
     #spawning                
     if globaltimer < 3600:
-        spawninterval = int(-1 / 14400 * math.sqrt(globaltimer) + 1800)
+        spawninterval = int(-1 / 14400 * math.pow(globaltimer, 2) + 1800)
     else:
         spawninterval = 900
 
@@ -279,6 +279,7 @@ while True:
     if player.alive == False and player.once > 2:
         globaltimer = 0
         spawntimer = 0
+        
     if gamestart == False:
         globaltimer = 0
         spawntimer = 0
