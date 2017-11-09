@@ -42,6 +42,9 @@ wall = Wall(0) #left wall
 wall = Wall(1275) #right wall
 flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
 
+pygame.mixer.music.load("Theme.wav")
+pygame.mixer.music.play(loops=-1, start=0.0)
+
 
 #main game loop
 while True:
