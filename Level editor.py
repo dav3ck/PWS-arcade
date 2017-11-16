@@ -18,6 +18,7 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 blue = (0,0,255)
+yellow = (140, 0,140)
 
 #Screen setup
 
@@ -55,7 +56,9 @@ class parent(pygame.sprite.Sprite):
 class Curser(parent):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface([40,40])
+        self.xsize = 160
+        self.ysize = 120
+        self.image = pygame.Surface([self.xsize,self.ysize])
         self.image.fill(blue)
         self.rect = self.image.get_rect()
         self.colum = 0
@@ -65,12 +68,18 @@ class Curser(parent):
         self.Error = False
 
 
+
     def update(self):
+
+
+        self.image = pygame.Surface([self.xsize,self.ysize])
 
         if self.Error == True:
             self.image.fill(red)
         else:
             self.image.fill(blue)
+
+        self.rect = self.image.get_rect()
         
         self.xcord = self.colum * 40
         self.ycord = self.row * 40
@@ -81,11 +90,25 @@ class Curser(parent):
 
 
 class Block(parent):
-    def __init__(self):
+    def __init__(self, x, y, color, row, colum):
         super().__init__()
-        self.image = pygame.Surface([40,40])
-        self.image.fill(red)
+        self.xsize = x
+        self.ysize = y
+        self.row = row
+        self.colum = colum
+        self.color = color
+        self.image = pygame.Surface([self.xsize,self.ysize])
+        self.image.fill(self.color)
         self.rect = self.image.get_rect()
+
+    def update(self):
+
+        self.xcord = self.colum * 40
+        self.ycord = self.row * 40 
+
+        self.rect.y = self.ycord
+        self.rect.x = self.xcord
+        
 
 #functies
 
@@ -98,13 +121,13 @@ def writearray(value, row, colum):
         for x in range(2):
             for y in range(2):
                 if x != 0 or y != 0:
-                    Level[0][row - x][colum + y] = 8.5
+                    Level[0][row + x][colum + y] = 8.5
 
     elif value == 9:
         for x in range(3):
             for y in range(4):
                 if x != 0 or y != 0:
-                    Level[0][row - x][colum + y] = 9.5
+                    Level[0][row + x][colum + y] = 9.5
 
 #Deze functie verwijderd de code
 
@@ -118,13 +141,13 @@ def cleararray(row, colum):
             for x in range(2):
                 for y in range(2):
                     if x != 0 or y != 0:
-                        Level[0][row - x][colum + y] = 0
+                        Level[0][row + x][colum + y] = 0
 
         elif value == 9:
             for x in range(3):
                 for y in range(4):
                     if x != 0 or y != 0:
-                        Level[0][row - x][colum + y] = 0
+                        Level[0][row + x][colum + y] = 0
                     
 #De check functie checked of iets geplaatst kan worden!
 
@@ -134,19 +157,58 @@ def check(value, row, colum):
     if value == 8:
         for x in range(2):
             for y in range(2):
-                if row - x < 0 or colum + y > 31 or type(Level[0][row - x][colum + y]) is float or Level[0][row - x][colum + y] == 8 or Level[0][row - x][colum + y] == 9:
+                if row + x < 0 or colum + y > 31 or type(Level[0][row + x][colum + y]) is float or Level[0][row + x][colum + y] != 0 or Level[0][row + x][colum + y] == 9:
                     Error = True
                     
     elif value == 9:
         for x in range(3):
             for y in range(4):
-                if row - x < 0 or colum + y > 31 or type(Level[0][row - x][colum + y]) is float or Level[0][row - x][colum + y] == 8 or Level[0][row - x][colum + y] == 9:
+                if row + x < 0 or colum + y > 31 or type(Level[0][row + x][colum + y]) is float or Level[0][row + x][colum + y] != 0 or Level[0][row + x][colum + y] == 9:
                     Error = True
     else:
         if Level[0][row][colum] != 0:
             Error = True
     return Error
 
+
+def placeblock(value, row, colum):
+    if value == 6:
+        xsize = 40
+        ysize = 40
+        color = white
+    elif value == 7:
+        xsize = 40
+        ysize = 40
+        color = green
+    elif value == 8:
+        xsize = 80
+        ysize = 80
+        color = green
+    elif value == 9:
+        xsize = 160
+        ysize = 120
+        color = green
+    else:
+        xsize = 40
+        ysize = 40
+        color = yellow
+        
+    block = Block(xsize, ysize, color, row, colum)
+
+def movement():
+    curser.Error = False
+    curser.Error = check(curser.blockvalue, curser.row, curser.colum)
+    if curser.blockvalue == 8:
+        curser.xsize = 80
+        curser.ysize = 80
+    elif curser.blockvalue == 9:
+        curser.xsize = 160
+        curser.ysize = 120
+    else:
+        curser.xsize = 40
+        curser.ysize = 40
+        
+        
 
 #Aanroepingen
 
@@ -157,8 +219,8 @@ curser = Curser()
 
 while True:
 
-    curser.Error = check(curser.blockvalue, curser.row, curser.colum)
-    
+    #curser.Error = check(curser.blockvalue, curser.row, curser.colum)
+    movement()
     
     for event in pygame.event.get(): #handles closing the window
         if event.type == pygame.QUIT:
@@ -176,8 +238,9 @@ while True:
                 print(curser.row, curser.colum)
                 if curser.Error != True:
                     writearray(curser.blockvalue, curser.row, curser.colum)
+                    placeblock(curser.blockvalue, curser.row, curser.colum)
             elif event.key == pygame.K_p:
-                print(Level)
+                print(curser.colum, curser.row)
             elif event.key == pygame.K_c:
                 print(curser.Error)
             elif event.key == pygame.K_q:
@@ -186,17 +249,24 @@ while True:
                 curser.blockvalue -= 1
             elif event.key == pygame.K_r:
                 cleararray(curser.row, curser.colum)
+        '''elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                movement()
+            elif event.key == pygame.K_RIGHT:
+                movement()
+            elif event.key == pygame.K_UP:
+                movement()
+            elif event.key == pygame.K_DOWN:
+                movement()'''
                  
-        
-    if curser.row >= 20:
+    if curser.row >= 22 - int(curser.xsize / 40) :
         curser.row = 0
     elif curser.row < 0:
-        curser.row = 19
-
-    if curser.colum >= 32:
-        curser.colum = 0
+        curser.row = 20 - int(curser.ysize / 40)
+    if curser.colum >= 33 - int(curser.xsize / 40):
+        curser.colum = 0 
     elif curser.colum < 0:
-        curser.colum = 31
+        curser.colum = 31 - int(curser.ysize / 40)
 
 
         
@@ -222,8 +292,8 @@ while True:
     xlines = 40
     ylines = 40
 
-    curser.Error = False
-    
+   
+
     pygame.display.flip()
 
     clock.tick(60)
