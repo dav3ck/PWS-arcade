@@ -58,6 +58,7 @@ class Curser(parent):
         super().__init__()
         self.xsize = 160
         self.ysize = 120
+        self.color = green
         self.image = pygame.Surface([self.xsize,self.ysize])
         self.image.fill(blue)
         self.rect = self.image.get_rect()
@@ -171,33 +172,8 @@ def check(value, row, colum):
     return Error
 
 
-def placeblock(value, row, colum):
-    if value == 6:
-        xsize = 40
-        ysize = 40
-        color = white
-    elif value == 7:
-        xsize = 40
-        ysize = 40
-        color = green
-    elif value == 8:
-        xsize = 80
-        ysize = 80
-        color = green
-    elif value == 9:
-        xsize = 160
-        ysize = 120
-        color = green
-    else:
-        xsize = 40
-        ysize = 40
-        color = yellow
-        
-    block = Block(xsize, ysize, color, row, colum)
-
 def movement():
     curser.Error = False
-    curser.Error = check(curser.blockvalue, curser.row, curser.colum)
     if curser.blockvalue == 8:
         curser.xsize = 80
         curser.ysize = 80
@@ -207,8 +183,28 @@ def movement():
     else:
         curser.xsize = 40
         curser.ysize = 40
-        
-        
+
+    if curser.blockvalue >= 7 and curser.blockvalue <= 9:
+        curser.color = green
+    elif curser.blockvalue == 6:
+        curser.color = white
+    else:
+        curser.color = yellow
+
+    offscreen()
+    curser.Error = check(curser.blockvalue, curser.row, curser.colum)
+    
+def offscreen():
+    if curser.row > 20 - int(curser.ysize / 40) :
+        curser.row = 0
+    elif curser.row < 0:
+        curser.row = 20 - int(curser.ysize / 40)
+    if curser.colum > 32 - int(curser.xsize / 40):
+        curser.colum = 0 
+    elif curser.colum < 0:
+        curser.colum = 32 - int(curser.xsize / 40)
+
+    
 
 #Aanroepingen
 
@@ -219,8 +215,8 @@ curser = Curser()
 
 while True:
 
-    #curser.Error = check(curser.blockvalue, curser.row, curser.colum)
     movement()
+
     
     for event in pygame.event.get(): #handles closing the window
         if event.type == pygame.QUIT:
@@ -238,7 +234,7 @@ while True:
                 print(curser.row, curser.colum)
                 if curser.Error != True:
                     writearray(curser.blockvalue, curser.row, curser.colum)
-                    placeblock(curser.blockvalue, curser.row, curser.colum)
+                    block = Block(curser.xsize, curser.ysize, curser.color, curser.row, curser.colum)
             elif event.key == pygame.K_p:
                 print(curser.colum, curser.row)
             elif event.key == pygame.K_c:
@@ -249,31 +245,8 @@ while True:
                 curser.blockvalue -= 1
             elif event.key == pygame.K_r:
                 cleararray(curser.row, curser.colum)
-        '''elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                movement()
-            elif event.key == pygame.K_RIGHT:
-                movement()
-            elif event.key == pygame.K_UP:
-                movement()
-            elif event.key == pygame.K_DOWN:
-                movement()'''
+ 
                  
-    if curser.row >= 22 - int(curser.xsize / 40) :
-        curser.row = 0
-    elif curser.row < 0:
-        curser.row = 20 - int(curser.ysize / 40)
-    if curser.colum >= 33 - int(curser.xsize / 40):
-        curser.colum = 0 
-    elif curser.colum < 0:
-        curser.colum = 31 - int(curser.ysize / 40)
-
-
-        
-    
-    
-
-
 
 
     #Unimportant
@@ -293,7 +266,6 @@ while True:
     ylines = 40
 
    
-
     pygame.display.flip()
 
     clock.tick(60)
