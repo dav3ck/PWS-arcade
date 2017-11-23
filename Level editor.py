@@ -10,6 +10,10 @@ height = 1024
 xlines = 40
 ylines = 40
 
+name = ''
+keyboard = 0
+editor_colum = 1
+
 
     #Variable Colors
 
@@ -26,6 +30,8 @@ screen = pygame.display.set_mode((width,height))
 screen_rect=screen.get_rect()
 pygame.display.set_caption('Level editor')
 clock = pygame.time.Clock()
+
+font = pygame.font.Font(None, 32)
 
 #Level array setup
 row = []
@@ -204,6 +210,10 @@ def offscreen():
     elif curser.colum < 0:
         curser.colum = 32 - int(curser.xsize / 40)
 
+def editor_value(editor_colum):
+    if editor_colum != 0:
+        curser.blockvalue = editor_colum
+
     
 
 #Aanroepingen
@@ -217,34 +227,74 @@ while True:
 
     movement()
 
+    if keyboard == 0:
+        for event in pygame.event.get(): #handles closing the window
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == pygame.KEYDOWN: #handles all keypresses
+                if event.key == pygame.K_LEFT:
+                    curser.colum -= 1
+                elif event.key == pygame.K_RIGHT:
+                    curser.colum += 1
+                elif event.key == pygame.K_UP:
+                    curser.row -= 1
+                elif event.key == pygame.K_DOWN:
+                    curser.row += 1
+                elif event.key == pygame.K_SPACE:
+                    print(curser.row, curser.colum)
+                    if curser.Error != True:
+                        writearray(curser.blockvalue, curser.row, curser.colum)
+                        block = Block(curser.xsize, curser.ysize, curser.color, curser.row, curser.colum)
+                elif event.key == pygame.K_p:
+                    print(curser.colum, curser.row)
+                elif event.key == pygame.K_c:
+                    print(curser.Error)
+                elif event.key == pygame.K_q:
+                    curser.blockvalue += 1
+                    print(curser.blockvalue)
+                elif event.key == pygame.K_e:
+                    keyboard = 1
+                    print(curser.blockvalue)
+                elif event.key == pygame.K_r:
+                    cleararray(curser.row, curser.colum)
+                elif event.key == pygame.K_s:
+                    with open('Levels.txt', 'a') as f:
+                        f.write(name + " - " + str(Level) + "\n")
+                        
+    elif keyboard == 1:
+        for event in pygame.event.get(): #handles closing the window
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    keyboard = 0
+                    editor_colum = 0
+                    editor_value(editor_colum)
+                elif event.key == pygame.K_BACKSPACE:
+                    name = name[:-1]
+                elif event.key == pygame.K_LEFT:
+                    editor_colum -= 1
+                    print(editor_colum)
+                elif event.key == pygame.K_RIGHT:
+                    editor_colum += 1
+                    print(editor_colum)
+                else:
+                    if len(name) < 20:
+                        name += event.unicode
+
+
     
-    for event in pygame.event.get(): #handles closing the window
-        if event.type == pygame.QUIT:
-            pygame.quit()
-        elif event.type == pygame.KEYDOWN: #handles all keypresses
-            if event.key == pygame.K_LEFT:
-                curser.colum -= 1
-            elif event.key == pygame.K_RIGHT:
-                curser.colum += 1
-            elif event.key == pygame.K_UP:
-                curser.row -= 1
-            elif event.key == pygame.K_DOWN:
-                curser.row += 1
-            elif event.key == pygame.K_SPACE:
-                print(curser.row, curser.colum)
-                if curser.Error != True:
-                    writearray(curser.blockvalue, curser.row, curser.colum)
-                    block = Block(curser.xsize, curser.ysize, curser.color, curser.row, curser.colum)
-            elif event.key == pygame.K_p:
-                print(curser.colum, curser.row)
-            elif event.key == pygame.K_c:
-                print(curser.Error)
-            elif event.key == pygame.K_q:
-                curser.blockvalue += 1
-            elif event.key == pygame.K_e:
-                curser.blockvalue -= 1
-            elif event.key == pygame.K_r:
-                cleararray(curser.row, curser.colum)
+    if editor_colum > 10:
+        editor_colum = 0
+    elif editor_colum < 0:
+        editor_colum = 10
+
+    if editor_colum == 0 and keyboard == 2:
+        keyboard = 1
+        
+                
+    
+
  
                  
 
@@ -254,6 +304,10 @@ while True:
     everything.update()
 
     screen.fill(black)
+
+    txt_surface = font.render(name, True, red)
+    screen.blit(txt_surface, (0, 0))
+    
     everything.draw(screen)
 
     while xlines < width or ylines < (height - 224):
