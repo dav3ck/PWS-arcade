@@ -37,7 +37,7 @@ font = pygame.font.Font(None, 32)
 row = []
 colum = []
 Level = []
-for y in range(20):
+for y in range(21):
     for x in range(32):
         colum.append(0)
     row.append(colum)
@@ -128,13 +128,13 @@ def writearray(value, row, colum):
         for x in range(2):
             for y in range(2):
                 if x != 0 or y != 0:
-                    Level[0][row + x][colum + y] = 8.5
+                    Level[0][row + x][colum + y] = 'a'
 
     elif value == 9:
         for x in range(3):
             for y in range(4):
                 if x != 0 or y != 0:
-                    Level[0][row + x][colum + y] = 9.5
+                    Level[0][row + x][colum + y] = 'a'
 
 #Deze functie verwijderd de code
 
@@ -164,13 +164,13 @@ def check(value, row, colum):
     if value == 8:
         for x in range(2):
             for y in range(2):
-                if row + x < 0 or colum + y > 31 or type(Level[0][row + x][colum + y]) is float or Level[0][row + x][colum + y] != 0 or Level[0][row + x][colum + y] == 9:
+                if row + x < 0 or colum + y > 31 or type(Level[0][row + x][colum + y]) is str or Level[0][row + x][colum + y] != 0 or Level[0][row + x][colum + y] == 9:
                     Error = True
                     
     elif value == 9:
         for x in range(3):
             for y in range(4):
-                if row + x < 0 or colum + y > 31 or type(Level[0][row + x][colum + y]) is float or Level[0][row + x][colum + y] != 0 or Level[0][row + x][colum + y] == 9:
+                if row + x < 0 or colum + y > 31 or type(Level[0][row + x][colum + y]) is str or Level[0][row + x][colum + y] != 0 or Level[0][row + x][colum + y] == 9:
                     Error = True
     else:
         if Level[0][row][colum] != 0:
@@ -201,10 +201,10 @@ def movement():
     curser.Error = check(curser.blockvalue, curser.row, curser.colum)
     
 def offscreen():
-    if curser.row > 20 - int(curser.ysize / 40) :
+    if curser.row > 21 - int(curser.ysize / 40) :
         curser.row = 0
     elif curser.row < 0:
-        curser.row = 20 - int(curser.ysize / 40)
+        curser.row = 21 - int(curser.ysize / 40)
     if curser.colum > 32 - int(curser.xsize / 40):
         curser.colum = 0 
     elif curser.colum < 0:
@@ -259,7 +259,13 @@ while True:
                     cleararray(curser.row, curser.colum)
                 elif event.key == pygame.K_s:
                     with open('Levels.txt', 'a') as f:
-                        f.write(name + " - " + str(Level) + "\n")
+                        f.write(":" + name + ":\n")
+                        for x in range(21):
+                            for y in range(32):
+                                f.write(str(Level[0][x][y]))
+                            f.write("\n")
+                            
+                            
                         
     elif keyboard == 1:
         for event in pygame.event.get(): #handles closing the window
@@ -268,7 +274,6 @@ while True:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     keyboard = 0
-                    editor_colum = 0
                     editor_value(editor_colum)
                 elif event.key == pygame.K_BACKSPACE:
                     name = name[:-1]
@@ -289,8 +294,7 @@ while True:
     elif editor_colum < 0:
         editor_colum = 10
 
-    if editor_colum == 0 and keyboard == 2:
-        keyboard = 1
+
         
                 
     
@@ -310,9 +314,9 @@ while True:
     
     everything.draw(screen)
 
-    while xlines < width or ylines < (height - 224):
-        pygame.draw.line(screen, white, (xlines, 0), (ylines, (height - 224)))
-        if ylines <= 800:
+    while xlines < width or ylines < (height - 184):
+        pygame.draw.line(screen, white, (xlines, 0), (ylines, (height - 184)))
+        if ylines <= 840:
             pygame.draw.line(screen, white, (0, ylines), (width, ylines))
         xlines += 40
         ylines += 40
