@@ -17,14 +17,19 @@ red = (255, 0, 0)
 blue = (0,0,255)
 yellow = (140, 0,140)
 
+#font setup
 
+pygame.font.init()
+myfont = pygame.font.Font('Sprites/Font/Arcade.ttf', 60)
 
 #Screen setup
-line = 1
+line = 0
 
 Level = []
 value = 0
 blockvalue = 0
+linenumber = 0
+levelname = True
 
 screen = pygame.display.set_mode((width,height))
 screen_rect=screen.get_rect()
@@ -44,6 +49,8 @@ wall = Wall(1275) #right wall
 with open('Levels.txt', 'r') as lines:
     lines = lines.read()
     lines = [line.rstrip('\n') for line in open('Levels.txt')]
+
+xline = int(len(lines) / 22)
 
 
 '''class parent(pygame.sprite.Sprite):
@@ -76,7 +83,7 @@ class Block(parent):
 
 def spawnlevel(Level):
     for y in range(21):
-        value = lines[y + 1]
+        value = lines[y + 1 + (linenumber * 22)]
         print(value)
         for x in range(32):
             blockvalue = value[x]
@@ -106,7 +113,9 @@ def spawnitems(y,x, typ):
         ball = Ball(2,x,y, True)
     elif typ == '9':
         ball = Ball(1,x,y, True)
-        
+
+
+    
 while True:
    
     for event in pygame.event.get(): #handles closing the window
@@ -116,14 +125,42 @@ while True:
             if event.key == pygame.K_SPACE:
                 print(Level)
                 spawnlevel(Level)
+                levelname = False
+            elif event.key == pygame.K_UP:
+                linenumber += 1
+            elif event.key == pygame.K_DOWN:
+                linenumber -= 1
 
-                
+    if linenumber >= xline:
+        linenumber = 0
+    elif linenumber < 0:
+        linenumber = xline - 1
+
+    if levelname == True:
+
+    
+        name0 = myfont.render( lines[((linenumber - 2) % xline) * 22], False, black)
+        name1 = myfont.render( lines[((linenumber - 1) % xline) * 22], False, black)
+        name2 = myfont.render( lines[((linenumber - 0) % xline) * 22], False, black)
+        name3 = myfont.render( lines[((linenumber + 1) % xline) * 22], False, black)
+        name4 = myfont.render( lines[((linenumber + 2) % xline) * 22], False, black)
+
+              
+
+    print(xline)
 
     everything.update()
   
     screen.blit(background,(0,0))
     
     everything.draw(screen)
+
+    if levelname == True:
+        screen.blit(name0, (500, 100))
+        screen.blit(name1, (500, 200))
+        screen.blit(name2, (500, 300))
+        screen.blit(name3, (500, 400))
+        screen.blit(name4, (500, 500))
 
     pygame.display.flip()
 

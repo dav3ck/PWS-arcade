@@ -259,7 +259,7 @@ while True:
                     cleararray(curser.row, curser.colum)
                 elif event.key == pygame.K_s:
                     with open('Levels.txt', 'a') as f:
-                        f.write(":" + name + ":\n")
+                        f.write(name + "\n")
                         for x in range(21):
                             for y in range(32):
                                 f.write(str(Level[0][x][y]))
