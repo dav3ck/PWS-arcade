@@ -42,9 +42,19 @@ wall = Wall(0) #left wall
 wall = Wall(1275) #right wall
 flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
 
-pygame.mixer.music.load("Theme.wav")
+pygame.mixer.music.load("Sounds/Theme.wav")
 pygame.mixer.music.play(loops=-1, start=0.0)
 
+Drone = pygame.mixer.Sound("Sounds/Drone.wav")
+Step = pygame.mixer.Sound("Sounds/footsteps 1.wav")
+Grunt = pygame.mixer.Sound("Sounds/Grunt-3.wav")
+Keypress  = pygame.mixer.Sound("Sounds/Drone.wav")
+Plop = pygame.mixer.Sound("Sounds/Plop-sound.wav")
+Reload = pygame.mixer.Sound("Sounds/Reloading.wav")
+powerupsound = pygame.mixer.Sound("Sounds/Schuiffluit-goed.wav")
+Shot = pygame.mixer.Sound("Sounds/Shot goed.wav")
+Bounce = pygame.mixer.Sound("Sounds/Slime-splat.wav")
+Death = pygame.mixer.Sound("Sounds/Ukulile-G-minor-down.wav")
 
 #main game loop
 while True:
@@ -80,6 +90,7 @@ while True:
                 if player.alive == True:
                     if player.ammo > 0 and spawntimer > 0:
                         bullet = Bullet(player.xcord,player.ycord)
+                        Shot.play()
                         player.ammo -= 1
                         player.fire = True
                 elif len(keyboards) == 1:

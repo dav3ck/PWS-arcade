@@ -128,11 +128,10 @@ class parent(pygame.sprite.Sprite):
         everything.add(self)
 
 class Ball(parent):
-    def __init__(self,check, x, y, freeze):
+    def __init__(self,check, x, y):
         super().__init__()
         self.xcord = x
         self.ycord = y
-        self.freeze = freeze
         self.dia = 0 #diameter of the ball
         self.weight = 0 #size of the parabole bigger number smaller parabole
         self.check = check #checks ball type
@@ -176,8 +175,7 @@ class Ball(parent):
         
 
     def update(self):
-        if self.freeze == False:
-            self.xcord += self.xspeed #handles ball horizontal movement
+        self.xcord += self.xspeed #handles ball horizontal movement
 
         self.timer += 1
         if self.timer > 30 and self.typenum == 0:
@@ -194,9 +192,8 @@ class Ball(parent):
                 self.weight *= 10000
                 self.ittnum = -1
                 self.typenum = 0
-        if self.freeze == False:
-            self.yspeed -= self.weight #handles ball bouncing
-            self.ycord -= self.yspeed
+        self.yspeed -= self.weight #handles ball bouncing
+        self.ycord -= self.yspeed
 
         self.image = pygame.image.load(ballanimation[self.sizenum][self.typenum][0][self.ittnum])
         self.rect = self.image.get_rect()
@@ -215,12 +212,12 @@ class Wall(parent):
         walls.add(self)
 
 class Player(parent):
-    def __init__(self, x,y):
+    def __init__(self):
         super().__init__()
         self.reducer = 1
         self.reducerup = 1
-        self.xcord = x#640 #x coördinate
-        self.ycord = y#752 #y coördinate
+        self.xcord = 640 #x coördinate
+        self.ycord = 752 #y coördinate
         self.ammo = 10
         self.lives = 3
         self.killcount = 0
