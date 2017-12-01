@@ -24,7 +24,6 @@ blocks = pygame.sprite.Group()
 
 #sounds
 Reload = pygame.mixer.Sound("Sounds/Reloading.wav")
-Step = pygame.mixer.Sound("Sounds/footsteps 1.wav")
 
 #highscores
 highscores = []
@@ -267,8 +266,6 @@ class Player(parent):
             self.lives = 0
             self.once += 1 
 
-        if self.xspeed != 0:
-            Step.play()
 
         if self.shooter == True and self.timer % 5 == 0:
             bullet = Bullet(self.xcord, self.ycord)

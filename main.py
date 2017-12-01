@@ -45,16 +45,14 @@ flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
 '''pygame.mixer.music.load("Sounds/Theme.wav")
 pygame.mixer.music.play(loops=-1, start=0.0)'''
 
-Drone = pygame.mixer.Sound("Sounds/Drone.wav")
-
-Step = pygame.mixer.Sound("Sounds/footsteps 1.wav")
 Grunt = pygame.mixer.Sound("Sounds/Grunt-3.wav")
-Keypress  = pygame.mixer.Sound("Sounds/Drone.wav")
+Keypress  = pygame.mixer.Sound("Sounds/Keyboard-sound.wav")
 Plop = pygame.mixer.Sound("Sounds/Plop-sound.wav")
 Reload = pygame.mixer.Sound("Sounds/Reloading.wav")
 powerupsound = pygame.mixer.Sound("Sounds/Schuiffluit-goed.wav")
 Shot = pygame.mixer.Sound("Sounds/Shot goed.wav")
 Bounce = pygame.mixer.Sound("Sounds/Slime-splat.wav")
+
 Death = pygame.mixer.Sound("Sounds/Ukulile-G-minor-down.wav")
 
 #main game loop
@@ -95,6 +93,7 @@ while True:
                         player.ammo -= 1
                         player.fire = True
                 elif len(keyboards) == 1:
+                    Keypress.play()
                     if textbox.ittnum < 5:
                         if (keyboard.capital == False and keyboard.num < 38): 
                             keyboard.name = keyboard.name + keyboard.alphabet[keyboard.num] #adds letter to list with name
@@ -167,6 +166,7 @@ while True:
     if player.alive == False and player.once == 1:
         flashart = Flashart("Sprites/Extra/GameOver.png", 414 , 50)
         player.deathtimer = 1
+        Death.play()
 
     if player.alive == False and player.deathtimer > 180 and len(keyboards) == 0: #Dit load na 3 seconde textbox in
         keyboard = Keyboard()
@@ -187,6 +187,7 @@ while True:
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
         for ball in hits:
+            Grunt.play()
             if ball.typenum == 0:
                 ball.yspeed = 9.5
             if player.immune == False:
@@ -196,6 +197,7 @@ while True:
     for bullet in bullets:
         hits = pygame.sprite.spritecollide(bullet, balls, True) #bullet on ball collisions
         for ball in hits:
+            Plop.play()
             if ball.ycord > 50:
                 pygame.sprite.Sprite.kill(bullet)
                 if ball.check == 1:
@@ -212,6 +214,7 @@ while True:
     for ball in balls: #ball floor bouncing
         hits = pygame.sprite.spritecollide(floor, balls, False)
         for ball in hits:
+            Bounce.play()
             if ball.typenum == 0:
                 ball.yspeed = 0
                 ball.xspeed /= 10000
@@ -249,6 +252,7 @@ while True:
     for upgrade in upgrades: #runs the powerups
         hits = pygame.sprite.spritecollide(upgrade, players, False)
         for player in hits:
+            powerupsound.play()
             upgrade.yspeed = 0
             upgrade.powerup(player,ball,balls)
             player.killcount += 0.5
