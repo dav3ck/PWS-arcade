@@ -42,10 +42,11 @@ wall = Wall(0) #left wall
 wall = Wall(1275) #right wall
 flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
 
-pygame.mixer.music.load("Sounds/Theme.wav")
-pygame.mixer.music.play(loops=-1, start=0.0)
+'''pygame.mixer.music.load("Sounds/Theme.wav")
+pygame.mixer.music.play(loops=-1, start=0.0)'''
 
 Drone = pygame.mixer.Sound("Sounds/Drone.wav")
+
 Step = pygame.mixer.Sound("Sounds/footsteps 1.wav")
 Grunt = pygame.mixer.Sound("Sounds/Grunt-3.wav")
 Keypress  = pygame.mixer.Sound("Sounds/Drone.wav")
