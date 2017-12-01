@@ -193,7 +193,7 @@ class Ball(parent):
                 self.weight *= 10000
                 self.ittnum = -1
                 self.typenum = 0
-        self.yspeed -= self.weight #handles ball bouncing
+        self.yspeed -= self.weight #handles ball falling
         self.ycord -= self.yspeed
 
         self.image = pygame.image.load(ballanimation[self.sizenum][self.typenum][0][self.ittnum])
@@ -244,9 +244,15 @@ class Player(parent):
             
 
     def reload(self):
-        Reload.play()
+        if self.alive == True:
+            Reload.play()
         self.ammo = 0
-        print("reloading")
+        self.reducer = 0.5
+        self.ammotimer += 1
+        if self.ammotimer == 120:
+            self.ammo = 10
+            self.reducer = 1
+            self.ammotimer = 0
 
     def update(self):
         if self.immune == True:

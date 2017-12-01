@@ -48,11 +48,9 @@ pygame.mixer.music.play(loops=-1, start=0.0)'''
 Grunt = pygame.mixer.Sound("Sounds/Grunt-3.wav")
 Keypress  = pygame.mixer.Sound("Sounds/Keyboard-sound.wav")
 Plop = pygame.mixer.Sound("Sounds/Plop-sound.wav")
-Reload = pygame.mixer.Sound("Sounds/Reloading.wav")
 powerupsound = pygame.mixer.Sound("Sounds/Schuiffluit-goed.wav")
 Shot = pygame.mixer.Sound("Sounds/Shot goed.wav")
 Bounce = pygame.mixer.Sound("Sounds/Slime-splat.wav")
-
 Death = pygame.mixer.Sound("Sounds/Ukulile-G-minor-down.wav")
 
 #main game loop
@@ -173,12 +171,8 @@ while True:
         textbox = Textbox()
         
     if player.ammo == 0: #reload mechanics
-        player.reducer = 0.5
-        player.ammotimer += 1
-        if player.ammotimer == 120:
-            player.ammo = 10
-            player.reducer = 1
-            player.ammotimer = 0
+        player.reload()
+        
     if player.ammo > 0 and player.ammotimer > 0: #alowss abortion of reloading
         player.reducer = 1
         player.ammotimer = 0
@@ -187,7 +181,8 @@ while True:
     for ball in balls:
         hits = pygame.sprite.spritecollide(player, balls, False) #ball on player colisions
         for ball in hits:
-            Grunt.play()
+            if player.alive == True:
+                Grunt.play()
             if ball.typenum == 0:
                 ball.yspeed = 9.5
             if player.immune == False:
@@ -197,7 +192,8 @@ while True:
     for bullet in bullets:
         hits = pygame.sprite.spritecollide(bullet, balls, True) #bullet on ball collisions
         for ball in hits:
-            Plop.play()
+            if player.alive == True:
+                Plop.play()
             if ball.ycord > 50:
                 pygame.sprite.Sprite.kill(bullet)
                 if ball.check == 1:
@@ -214,7 +210,8 @@ while True:
     for ball in balls: #ball floor bouncing
         hits = pygame.sprite.spritecollide(floor, balls, False)
         for ball in hits:
-            Bounce.play()
+            if player.alive == True:
+                Bounce.play()
             if ball.typenum == 0:
                 ball.yspeed = 0
                 ball.xspeed /= 10000
