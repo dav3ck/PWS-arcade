@@ -22,7 +22,8 @@ letters = pygame.sprite.Group()
 keyboards = pygame.sprite.Group()
 blocks = pygame.sprite.Group()
 
-
+#sounds
+Reload = pygame.mixer.Sound("Sounds/Reloading.wav")
 
 #highscores
 highscores = []
@@ -243,6 +244,7 @@ class Player(parent):
             
 
     def reload(self):
+        Reload.play()
         self.ammo = 0
         print("reloading")
 
