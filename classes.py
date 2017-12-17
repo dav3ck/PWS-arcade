@@ -25,11 +25,11 @@ keyboards = pygame.sprite.Group()
 blocks = pygame.sprite.Group()
 
 #sounds
-Reload = pygame.mixer.Sound("/home/pi/sticky_icky/Sounds/Reloading.ogg")
+Reload = pygame.mixer.Sound("Sounds/Reloading.ogg")
 
 #highscores
 highscores = []
-with open("/home/pi/sticky_icky/highscores.txt", 'r') as r:
+with open("highscores.txt", 'r') as r:
     for line in sorted(r):
         highscores.insert(0, line)
 
@@ -41,7 +41,7 @@ k1 = []
 j1 = []
 
 for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
-    legacy0 = "/home/pi/sticky_icky/Sprites/balls/size" + str(i)
+    legacy0 = "Sprites/balls/size" + str(i)
     for j in range (2): #where the ball is in its bounce (type) 0 = in motion, 1 = on the ground
         legacy1 = legacy0 + "/type" + str(j)
         for k in range (3): #wich variation it is
@@ -60,7 +60,7 @@ for i in range (3): #size of the ball size 0 = big, 1 = medium, 2 = small
 playeranimation = []
 
 for i in range(3):
-    legacy0 = "/home/pi/sticky_icky/Sprites/Player/type" + str(i)
+    legacy0 = "Sprites/Player/type" + str(i)
     for k in range (2):
         legacy1 = legacy0 + "/var" + str(k)
         for j in range (6):
@@ -76,7 +76,7 @@ for i in range(3):
 upgradeanimation = []
 
 for i in range(3):
-    legacy0 = "/home/pi/sticky_icky/Sprites/Upgrade/type" + str(i)
+    legacy0 = "Sprites/Upgrade/type" + str(i)
     for k in range (2):
         legacy1 = legacy0 + "/var" + str(k)
         for j in range (8):
@@ -92,7 +92,7 @@ for i in range(3):
 keyboardanimation = [] #Array met alle Keyboard sprites erin
 
 for i in range(81): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
-    legacy0 = "/home/pi/sticky_icky/Sprites/Keyboard/Itteration" + str(i) + ".png"
+    legacy0 = "Sprites/Keyboard/Itteration" + str(i) + ".png"
     keyboardanimation.append(legacy0)
 
 #floor animation
@@ -100,7 +100,7 @@ for i in range(81): #Zelfde als voor slime animatie sprites alleen dit keer klei
 groundanimation = [] #Array met alle ground sprites
 
 for i in range(5): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
-    legacy0 = "/home/pi/sticky_icky/Sprites/Ground/itteration" + str(i) + ".png"
+    legacy0 = "Sprites/Ground/itteration" + str(i) + ".png"
     groundanimation.append(legacy0)
 
 #Textbox animation
@@ -108,14 +108,14 @@ for i in range(5): #Zelfde als voor slime animatie sprites alleen dit keer klein
 textboxanimation = [] #Array met alle ground sprites
 
 for i in range(7): #Zelfde als voor slime animatie sprites alleen dit keer kleiner 
-    legacy0 = "/home/pi/sticky_icky/Sprites/Textbox/itteration" + str(i) + ".png"
+    legacy0 = "Sprites/Textbox/itteration" + str(i) + ".png"
     textboxanimation.append(legacy0)
 
 #letter annimation
 letteranimation = []
 
 for i in range (64):
-    legacy0 = "/home/pi/sticky_icky/Sprites/letters/l0_letter" + str(i) + ".png"
+    legacy0 = "Sprites/letters/l0_letter" + str(i) + ".png"
     letteranimation.append(legacy0)
 
 
@@ -148,31 +148,31 @@ class Ball(parent):
             self.xspeed = -2
             self.dia = 160
             self.weight = 0.1
-            self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/balls/size0/type0/variation0/itteration0.png").convert_alpha()
+            self.image = pygame.image.load("Sprites/balls/size0/type0/variation0/itteration0.png").convert_alpha()
         elif check == 2: #medium ball right
             self.xspeed = 3
             self.dia = 80
             self.weight = 0.2
             self.sizenum = 1
-            self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/balls/size1/type0/variation0/itteration0.png").convert_alpha()
+            self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png").convert_alpha()
         elif check == 3: #medium ball left
             self.xspeed = -3
             self.dia = 80
             self.weight = 0.2
             self.sizenum = 1
-            self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/balls/size1/type0/variation0/itteration0.png").convert_alpha()
+            self.image = pygame.image.load("Sprites/balls/size1/type0/variation0/itteration0.png").convert_alpha()
         elif check == 4: #small ball right
             self.xspeed = 5
             self.dia = 40
             self.weight = 0.3
             self.sizenum = 2
-            self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/balls/size2/type0/variation0/itteration0.png").convert_alpha()
+            self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png").convert_alpha()
         elif check == 5: #small ball left
             self.xspeed = -5
             self.dia = 40
             self.weight = 0.3
             self.sizenum = 2
-            self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/balls/size2/type0/variation0/itteration0.png").convert_alpha()
+            self.image = pygame.image.load("Sprites/balls/size2/type0/variation0/itteration0.png").convert_alpha()
             
         self.rect = self.image.get_rect()
         balls.add(self)
@@ -282,7 +282,7 @@ class Player(parent):
 
             
         if self.alive == False:
-            self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/Extra/Death.png").convert_alpha()
+            self.image = pygame.image.load("Sprites/Extra/Death.png").convert_alpha()
         elif self.fire == True and self.xspeed == 0:
             self.firetimer += 1
             self.image = pygame.image.load(playeranimation[0][self.immune1][1]).convert_alpha()
@@ -334,7 +334,7 @@ class Bullet(parent):
         self.xcord = x + 40
         self.ycord = y
         self.yspeed = 10
-        self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/Extra/Bullet.png").convert()
+        self.image = pygame.image.load("Sprites/Extra/Bullet.png").convert()
         self.rect = self.image.get_rect()
         bullets.add(self)
         
@@ -350,7 +350,7 @@ class Floor(parent):
     def __init__(self):
         super().__init__()
         self.ycord = 824
-        self.image = pygame.image.load("/home/pi/sticky_icky/Sprites/Ground/itteration0.png").convert_alpha()
+        self.image = pygame.image.load("Sprites/Ground/itteration0.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.timer = 0
         self.ittnum = 0
