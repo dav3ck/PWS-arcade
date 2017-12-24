@@ -45,13 +45,13 @@ flashart = Flashart("Sprites/Extra/Flash.png", 0, 0)
 pygame.mixer.music.load("Sounds/Theme.wav")
 pygame.mixer.music.play(loops=-1, start=0.0)
 
-Grunt = pygame.mixer.Sound("Sounds/Grunt-3.wav")
+'''Grunt = pygame.mixer.Sound("Sounds/Grunt-3.wav")
 Keypress  = pygame.mixer.Sound("Sounds/Keyboard-sound.wav")
 Plop = pygame.mixer.Sound("Sounds/Plop-sound.wav")
 powerupsound = pygame.mixer.Sound("Sounds/Schuiffluit-goed.wav")
 Shot = pygame.mixer.Sound("Sounds/Shot goed.wav")
 Bounce = pygame.mixer.Sound("Sounds/Slime-splat.wav")
-Death = pygame.mixer.Sound("Sounds/Ukulile-G-minor-down.wav")
+Death = pygame.mixer.Sound("Sounds/Ukulile-G-minor-down.wav")'''
 
 #main game loop
 while True:
@@ -139,6 +139,8 @@ while True:
             elif event.key == pygame.K_n:
                 screen = pygame.display.set_mode((1280,1024))
                 pygame.mouse.set_visible(1)
+            elif event.key == pygame.K_O:
+                upgrade = Upgrade(4)
         elif event.type == pygame.KEYUP: #handles all key releases
             if event.key == pygame.K_LEFT: #left key release
                 if player.alive == True and gamestart == True:
